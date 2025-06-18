@@ -23,6 +23,10 @@ permalink: /
 - 請操作API完成測試丟單。可以參考測試丟單範例[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
 https://colab.research.google.com/github/PFCEC/unitrade/blob/main/%E6%95%99%E5%AD%B8/sample/unitrade_Demo.ipynb)進行操作。
 
+
+- <a href="./教學/sample/unitrade_Demo.ipynb" download>下載範例</a> 
+
+
 ### 1.5 開通正式API
 - 通知您的營業員開通正式API，並取得正式開通的Email。
 
