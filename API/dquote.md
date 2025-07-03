@@ -1,9 +1,9 @@
 ---  
-nav_order: 4
+nav_order: 14
 parent: API Reference  
 title: "dquote"
 --- 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/just-the-docs-custom.css">
+<link rel="stylesheet" href="/assets/css/just-the-docs-custom.css">
 內期行情
 註冊接收即時和查詢
 
@@ -61,13 +61,13 @@ class DQuote()
 
 #### on\_tick\_data\_before\_trade
 
-試搓成交價事件..傳入物件:DTickDataBeforeTrade
+試撮成交價事件..傳入物件:DTickDataBeforeTrade
 
 <a id="dquote.DQuote.on_tick_data_before_bid_offer"></a>
 
 #### on\_tick\_data\_before\_bid\_offer
 
-試搓五檔事件..傳入物件:DTickDataBeforeBidOffer
+試撮五檔事件..傳入物件:DTickDataBeforeBidOffer
 
 <a id="dquote.DQuote.on_tick_data_open"></a>
 
@@ -83,13 +83,13 @@ class DQuote()
 def get_current_server()
 ```
 
-目前連結主機IP 和 PORT
-##### Returns 
-
-| Name | Type | Description |
-| ------ | ------ | ------------- |
-| host | str | 主機IP |    
-| port | str | 主機Port |
+目前連結主機
+##### 回傳值 str 
+##### 範例
+```python
+server = unitrade.dquote.get_current_server()
+print(server)  # 輸出目前連結的主機 
+```
 
 <a id="dquote.DQuote.get_server_list"></a>
 
@@ -100,12 +100,19 @@ def get_server_list()
 ```
 
 透過可連結主機
-##### Returns dict[Server]
+##### 回傳值 dict[Server]
 
-| Name | Type | Description |
-| ------ | ------ | ------------- |
+| 型別 | 說明 |
+| ------ | ------------- |
 | key | str | servername |    
-| value | Server | Server ip:str / port:int |
+| value | Server | 主機物件 |
+
+##### 範例
+```python
+server_list = unitrade.dquote.get_server_list()
+for servername, server in server_list.items():
+    print(f'主機名稱: {servername})
+```
 
 <a id="dquote.DQuote.set_sever_by_name"></a>
 
@@ -115,12 +122,28 @@ def get_server_list()
 def set_sever_by_name(servername) -> Tuple[bool, str]
 ```
 
-透過主機名稱連結主機
-##### Parameters 
+透過主機名稱切換連結主機
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
 | servername | str | 主機名稱 |
+
+##### 回傳值 bool
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| True | 切換連線成功 |
+| False | 切換連線失敗 |
+
+##### 範例
+```python
+success = unitrade.dquote.set_sever_by_name("xxx")
+if success:
+    print("連線成功")
+else:
+    print("連線失敗")
+```
 
 <a id="dquote.DQuote.get_subscribe_trade_bid_offer"></a>
 
@@ -131,6 +154,17 @@ def get_subscribe_trade_bid_offer()
 ```
 
 查詢已註冊成交.賣賣價量 商品
+##### 回傳值 list[str]
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| list[str] | 註冊的商品代碼列表 |
+
+##### 範例
+```python
+subscribed_products = unitrade.dquote.get_subscribe_trade_bid_offer()
+print(subscribed_products)  # 輸出已註冊的商品代碼列表
+```
 
 <a id="dquote.DQuote.get_subscribe_highlow"></a>
 
@@ -140,7 +174,19 @@ def get_subscribe_trade_bid_offer()
 def get_subscribe_highlow()
 ```
 
-查詢已註冊最高最低價
+查詢已註冊最高最低價商品代碼列表
+##### 回傳值 list[str]
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| list[str] | 已註冊最高最低價商品代碼列表 |
+
+##### 範例
+```python
+subscribed_highlow_products = unitrade.dquote.get_subscribe_highlow()
+print(subscribed_highlow_products)
+# 輸出已註冊的最高最低價商品代碼列表
+```
 
 <a id="dquote.DQuote.get_subscribe_index_data"></a>
 
@@ -151,6 +197,17 @@ def get_subscribe_index_data()
 ```
 
 查詢已註冊現貨 商品
+##### 回傳值 list[str]  
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| list[str] | 註冊的現貨商品代碼列表 |
+
+##### 範例
+```python
+subscribed_index_products = unitrade.dquote.get_subscribe_index_data()
+print(subscribed_index_products)  # 輸出已註冊的現貨商品代碼列表
+```
 
 <a id="dquote.DQuote.get_subscribe_open"></a>
 
@@ -161,6 +218,17 @@ def get_subscribe_open()
 ```
 
 查詢已註冊開盤價 商品
+##### 回傳值 list[str]  
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| list[str] | 註冊的開盤價商品代碼列表 |
+
+##### 範例
+```python
+subscribed_open_products = unitrade.dquote.get_subscribe_open()
+print(subscribed_open_products)
+```
 
 <a id="dquote.DQuote.query_tick_data_trade"></a>
 
@@ -171,14 +239,25 @@ def query_tick_data_trade(productid) -> DTickDataTradeResponse
 ```
 
 查詢最後成交價量
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |    
+| productid | str | 商品代碼 |
 
-##### Returns  
-TickDataTradeResponse
+##### 回傳值 DTickDataTradeResponse
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataTrade | 成交價量資料 |
+
+##### 範例
+```python
+response = unitrade.dquote.query_tick_data_trade("TXFF5")
+# DTickDataTradeResponse(ok=True, error='', data=DTickDataTrade(commodityid='TXFG5', infotime='132333276000', matchprice=21699.0, matchquantity=2, matchtotalqty=45901, matchbuycnt=31986, matchsellcnt=30551, matchtime='132333178000', matchpricedata=[], matchqtydata=[]))
+```
 
 <a id="dquote.DQuote.query_tick_data_high_low"></a>
 
@@ -189,15 +268,25 @@ def query_tick_data_high_low(productid) -> DTickDataHighLowResponse
 ```
 
 查詢最高(低)價
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |    
+| productid | str | 商品代碼 |
 
-##### Returns 
+##### 回傳值 DTickDataHighLowResponse
 
-TickDataHighLowResponse
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataHighLow | 最高(低)價資料 |
+
+##### 範例
+```python 
+response = unitrade.dquote.query_tick_data_high_low("TXFG5")
+# DTickDataHighLowResponse(ok=True, error='', data=DTickDataHighLow(commodityid='TXFG5', showtime='105141451000', dayhighprice=21857.0, daylowprice=21675.0))
+```
 
 <a id="dquote.DQuote.query_tick_data_before_trade"></a>
 
@@ -208,14 +297,24 @@ def query_tick_data_before_trade(productid) -> DTickDataBeforeTradeResponse
 ```
 
 查詢最後盤前成交價量
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |    
+| productid | str | 商品代碼 |
 
-##### Returns 
-TickDataBeforeTradeResponse
+##### 回傳值 DTickDataBeforeTradeResponse
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataBeforeTrade | 盤前成交價量  |
+
+##### 範例
+```python 
+response = unitrade.dquote.query_tick_data_before_trade("TXFG5")
+# DTickDataBeforeTradeResponse(ok=True, error='', data=DTickDataBeforeTrade(commodityid='TXFG5', infotime='084455000000', matchprice=21810.0, matchquantity=125, matchtotalqty=0, matchbuycnt=0, matchsellcnt=0, matchtime='084455000000'))
+```
 
 <a id="dquote.DQuote.query_tick_data_open"></a>
 
@@ -226,15 +325,25 @@ def query_tick_data_open(productid) -> DTickDataOpenResponse
 ```
 
 查詢開盤價
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |  
+| productid | str | 商品代碼 |
 
-##### Returns 
+##### 回傳值 DTickDataOpenResponse
 
-TickDataOpenResponse
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataOpen | 開盤價  |
+
+##### 範例
+```python         
+response = unitrade.dquote.query_tick_data_open("TXFG5")
+# DTickDataOpenResponse(ok=True, error='', data=DTickDataOpen(commodityid='TXFG5', opentime='084500060000', openprice=21820.0, openquantity=159))
+```
 
 <a id="dquote.DQuote.query_index_data"></a>
 
@@ -245,14 +354,25 @@ def query_index_data(productid) -> DIndexDataResponse
 ```
 
 查詢現貨成交價
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |  
+| productid | str | 商品代碼 |
 
-##### Returns 
-IndexDataResponse
+##### 回傳值 DIndexDataResponse
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DIndexData | 現貨成交價  |
+
+##### 範例
+```python 
+response = unitrade.dquote.query_index_data("TXF")
+# DIndexDataResponse(ok=True, error='', data=DIndexData(index_kind='TXF', index_time='133325000000', index_value=22003.5))
+```
 
 <a id="dquote.DQuote.query_tick_data_bid_offer"></a>
 
@@ -263,15 +383,25 @@ def query_tick_data_bid_offer(productid) -> DTickDataBidOfferResponse
 ```
 
 查詢最後五檔
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |  
+| productid | str | 商品代碼 |
 
-##### Returns 
+##### 回傳值 DTickDataBidOfferResponse
 
-TickDataBidOfferResponse
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataBidOffer | 最後五檔  |
+
+##### 範例
+```python 
+response = unitrade.dquote.query_tick_data_bid_offer("TXFG5")
+# DTickDataBidOfferResponse(ok=True, error='', data=DTickDataBidOffer(commodityid='TXFG5', bp1=21704.0, bp2=21703.0, bp3=21702.0, bp4=21701.0, bp5=21700.0, bq1=5, bq2=3, bq3=7, bq4=3, bq5=5, sp1=21706.0, sp2=21708.0, sp3=21709.0, sp4=21710.0, sp5=21711.0, sq1=4, sq2=1, sq3=3, sq4=12, sq5=16))
+```
 
 <a id="dquote.DQuote.query_tick_data_before_bid_offer"></a>
 
@@ -283,15 +413,25 @@ def query_tick_data_before_bid_offer(
 ```
 
 查詢最後盤前五檔
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| productid | str | 商品代碼 |  
+| productid | str | 商品代碼 |
 
-##### Returns 
+##### 回傳值 DTickDataBeforeBidOfferResponse
 
-TickDataBeforeBidOfferResponse
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataBeforeBidOffer | 最後盤前五檔  |
+
+##### 範例
+```python
+response = unitrade.dquote.query_tick_data_before_bid_offer("TXFG5")
+# DTickDataBeforeBidOfferResponse(ok=True, error='', data=DTickDataBeforeBidOffer(commodityid='TXFG5', bp1=21810.0, bp2=21809.0, bp3=21808.0, bp4=21807.0, bp5=21805.0, bq1=1, bq2=5, bq3=2, bq4=3, bq5=3, sp1=21811.0, sp2=21815.0, sp3=21816.0, sp4=21819.0, sp5=21821.0, sq1=1, sq2=10, sq3=1, sq4=1, sq5=1))
+```
 
 <a id="dquote.DQuote.subscribe_trade_bid_offer"></a>
 
@@ -600,699 +740,4 @@ class Format()
 #### X080
 
 委託簿揭示訊息
-
----  
-nav_order: 4
-parent: API Reference  
-title: "dquote"
---- 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/just-the-docs-custom.css">
-內期行情物件
-
-<a id="ddata.DTickDataTrade"></a>
-
-## DTickDataTrade Objects
-
-```python
-class DTickDataTrade()
-```
-
-成交價揭示
-
-<a id="ddata.DTickDataTrade.commodityid"></a>
-
-#### commodityid
-
-商品代號 str
-
-<a id="ddata.DTickDataTrade.infotime"></a>
-
-#### infotime
-
-期交所送出時間 str
-
-<a id="ddata.DTickDataTrade.matchprice"></a>
-
-#### matchprice
-
-成交價格 float
-
-<a id="ddata.DTickDataTrade.matchquantity"></a>
-
-#### matchquantity
-
-成交量 int
-
-<a id="ddata.DTickDataTrade.matchtotalqty"></a>
-
-#### matchtotalqty
-
-成交總量 int
-
-<a id="ddata.DTickDataTrade.matchbuycnt"></a>
-
-#### matchbuycnt
-
-成交買量 int
-
-<a id="ddata.DTickDataTrade.matchsellcnt"></a>
-
-#### matchsellcnt
-
-成交賣量 int
-
-<a id="ddata.DTickDataTrade.matchtime"></a>
-
-#### matchtime
-
-成交時間 str
-
-<a id="ddata.DTickDataHighLow"></a>
-
-## DTickDataHighLow Objects
-
-```python
-class DTickDataHighLow()
-```
-
-最高最低價揭示
-
-<a id="ddata.DTickDataHighLow.commodityid"></a>
-
-#### commodityid
-
-商品代碼 str
-
-<a id="ddata.DTickDataHighLow.showtime"></a>
-
-#### showtime
-
-時間 str
-
-<a id="ddata.DTickDataHighLow.dayhighprice"></a>
-
-#### dayhighprice
-
-最高價 float
-
-<a id="ddata.DTickDataHighLow.daylowprice"></a>
-
-#### daylowprice
-
-最低價 float
-
-<a id="ddata.DTickDataBeforeTrade"></a>
-
-## DTickDataBeforeTrade Objects
-
-```python
-class DTickDataBeforeTrade()
-```
-
-盤前揭示成交價揭示
-
-<a id="ddata.DTickDataBeforeTrade.commodityid"></a>
-
-#### commodityid
-
-商品代號 str
-
-<a id="ddata.DTickDataBeforeTrade.infotime"></a>
-
-#### infotime
-
-期交所送出時間 str
-
-<a id="ddata.DTickDataBeforeTrade.matchprice"></a>
-
-#### matchprice
-
-成交價格 int
-
-<a id="ddata.DTickDataBeforeTrade.matchquantity"></a>
-
-#### matchquantity
-
-成交量 int
-
-<a id="ddata.DTickDataBeforeTrade.matchtotalqty"></a>
-
-#### matchtotalqty
-
-成交總量 int
-
-<a id="ddata.DTickDataBeforeTrade.matchbuycnt"></a>
-
-#### matchbuycnt
-
-成交買量 int
-
-<a id="ddata.DTickDataBeforeTrade.matchsellcnt"></a>
-
-#### matchsellcnt
-
-成交賣量 int
-
-<a id="ddata.DTickDataBeforeTrade.matchtime"></a>
-
-#### matchtime
-
-成交時間 str
-
-<a id="ddata.DIndexData"></a>
-
-## DIndexData Objects
-
-```python
-class DIndexData()
-```
-
-現貨價
-
-<a id="ddata.DIndexData.index_kind"></a>
-
-#### index\_kind
-
-現貨代碼 str
-
-<a id="ddata.DIndexData.index_time"></a>
-
-#### index\_time
-
-現貨統計時間 str
-
-<a id="ddata.DIndexData.index_value"></a>
-
-#### index\_value
-
-現貨價 float
-
-<a id="ddata.DTickDataBidOffer"></a>
-
-## DTickDataBidOffer Objects
-
-```python
-class DTickDataBidOffer()
-```
-
-委託簿揭示
-
-<a id="ddata.DTickDataBidOffer.commodityid"></a>
-
-#### commodityid
-
-商品代碼 str
-
-<a id="ddata.DTickDataBidOffer.bp1"></a>
-
-#### bp1
-
-第一檔委買價格 float
-
-<a id="ddata.DTickDataBidOffer.bp2"></a>
-
-#### bp2
-
-第二檔委買價格 float
-
-<a id="ddata.DTickDataBidOffer.bp3"></a>
-
-#### bp3
-
-第三檔委買價格 float
-
-<a id="ddata.DTickDataBidOffer.bp4"></a>
-
-#### bp4
-
-第四檔委買價格 float
-
-<a id="ddata.DTickDataBidOffer.bp5"></a>
-
-#### bp5
-
-第五檔委買價格 float
-
-<a id="ddata.DTickDataBidOffer.bq1"></a>
-
-#### bq1
-
-第一檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.bq2"></a>
-
-#### bq2
-
-第二檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.bq3"></a>
-
-#### bq3
-
-第三檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.bq4"></a>
-
-#### bq4
-
-第四檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.bq5"></a>
-
-#### bq5
-
-第五檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.sp1"></a>
-
-#### sp1
-
-第一檔委賣價格 float
-
-<a id="ddata.DTickDataBidOffer.sp2"></a>
-
-#### sp2
-
-第二檔委賣價格 float
-
-<a id="ddata.DTickDataBidOffer.sp3"></a>
-
-#### sp3
-
-第三檔委賣價格 float
-
-<a id="ddata.DTickDataBidOffer.sp4"></a>
-
-#### sp4
-
-第四檔委賣價格 float
-
-<a id="ddata.DTickDataBidOffer.sp5"></a>
-
-#### sp5
-
-第五檔委賣價格 float
-
-<a id="ddata.DTickDataBidOffer.sq1"></a>
-
-#### sq1
-
-第一檔委買數量 int
-
-<a id="ddata.DTickDataBidOffer.sq2"></a>
-
-#### sq2
-
-第二檔委賣數量 int
-
-<a id="ddata.DTickDataBidOffer.sq3"></a>
-
-#### sq3
-
-第三檔委賣數量 int
-
-<a id="ddata.DTickDataBidOffer.sq4"></a>
-
-#### sq4
-
-第四檔委賣數量 int
-
-<a id="ddata.DTickDataBidOffer.sq5"></a>
-
-#### sq5
-
-第五檔委賣數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer"></a>
-
-## DTickDataBeforeBidOffer Objects
-
-```python
-class DTickDataBeforeBidOffer()
-```
-
-盤前委託簿揭示
-
-<a id="ddata.DTickDataBeforeBidOffer.commodityid"></a>
-
-#### commodityid
-
-商品代碼 str
-
-<a id="ddata.DTickDataBeforeBidOffer.bp1"></a>
-
-#### bp1
-
-第一檔委買價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.bp2"></a>
-
-#### bp2
-
-第二檔委買價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.bp3"></a>
-
-#### bp3
-
-第三檔委買價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.bp4"></a>
-
-#### bp4
-
-第四檔委買價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.bp5"></a>
-
-#### bp5
-
-第五檔委買價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.bq1"></a>
-
-#### bq1
-
-第一檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.bq2"></a>
-
-#### bq2
-
-第二檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.bq3"></a>
-
-#### bq3
-
-第三檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.bq4"></a>
-
-#### bq4
-
-第四檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.bq5"></a>
-
-#### bq5
-
-第五檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.sp1"></a>
-
-#### sp1
-
-第一檔委賣價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.sp2"></a>
-
-#### sp2
-
-第二檔委賣價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.sp3"></a>
-
-#### sp3
-
-第三檔委賣價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.sp4"></a>
-
-#### sp4
-
-第四檔委賣價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.sp5"></a>
-
-#### sp5
-
-第五檔委賣價格 float
-
-<a id="ddata.DTickDataBeforeBidOffer.sq1"></a>
-
-#### sq1
-
-第一檔委買數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.sq2"></a>
-
-#### sq2
-
-第二檔委賣數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.sq3"></a>
-
-#### sq3
-
-第三檔委賣數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.sq4"></a>
-
-#### sq4
-
-第四檔委賣數量 int
-
-<a id="ddata.DTickDataBeforeBidOffer.sq5"></a>
-
-#### sq5
-
-第五檔委賣數量 int
-
-<a id="ddata.DTickDataOpen"></a>
-
-## DTickDataOpen Objects
-
-```python
-class DTickDataOpen()
-```
-
-開盤價揭示
-
-<a id="ddata.DTickDataOpen.commodityid"></a>
-
-#### commodityid
-
-商品代碼
-
-<a id="ddata.DTickDataOpen.opentime"></a>
-
-#### opentime
-
-開盤時間
-
-<a id="ddata.DTickDataOpen.openprice"></a>
-
-#### openprice
-
-開盤價
-
-<a id="ddata.DTickDataOpen.openquantity"></a>
-
-#### openquantity
-
-開盤量
-
-<a id="ddata.DTickDataTradeResponse"></a>
-
-## DTickDataTradeResponse Objects
-
-```python
-@dataclass
-class DTickDataTradeResponse()
-```
-
-成交價量查詢回覆物件
-
-<a id="ddata.DTickDataTradeResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataTradeResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataTradeResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataTrade
-
-<a id="ddata.DTickDataBeforeTradeResponse"></a>
-
-## DTickDataBeforeTradeResponse Objects
-
-```python
-@dataclass
-class DTickDataBeforeTradeResponse()
-```
-
-試搓成交價量查詢回覆物件
-
-<a id="ddata.DTickDataBeforeTradeResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataBeforeTradeResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataBeforeTradeResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataBeforeTrade
-
-<a id="ddata.DTickDataHighLowResponse"></a>
-
-## DTickDataHighLowResponse Objects
-
-```python
-@dataclass
-class DTickDataHighLowResponse()
-```
-
-最高最低價查詢回覆物件
-
-<a id="ddata.DTickDataHighLowResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataHighLowResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataHighLowResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataHighLow
-
-<a id="ddata.DTickDataOpenResponse"></a>
-
-## DTickDataOpenResponse Objects
-
-```python
-@dataclass
-class DTickDataOpenResponse()
-```
-
-開盤價查詢回覆物件
-
-<a id="ddata.DTickDataOpenResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataOpenResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataOpenResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataOpen
-
-<a id="ddata.DIndexDataResponse"></a>
-
-## DIndexDataResponse Objects
-
-```python
-@dataclass
-class DIndexDataResponse()
-```
-
-現貨價格查詢回覆物件
-
-<a id="ddata.DIndexDataResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DIndexDataResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DIndexDataResponse.data"></a>
-
-#### data
-
-回覆物件 IndexData
-
-<a id="ddata.DTickDataBidOfferResponse"></a>
-
-## DTickDataBidOfferResponse Objects
-
-```python
-@dataclass
-class DTickDataBidOfferResponse()
-```
-
-最佳買賣價查詢回覆物件
-
-<a id="ddata.DTickDataBidOfferResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataBidOfferResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataBidOfferResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataBidOffer
-
-<a id="ddata.DTickDataBeforeBidOfferResponse"></a>
-
-## DTickDataBeforeBidOfferResponse Objects
-
-```python
-@dataclass
-class DTickDataBeforeBidOfferResponse()
-```
-
-試搓最佳買賣價查詢回覆物件
-
-<a id="ddata.DTickDataBeforeBidOfferResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DTickDataBeforeBidOfferResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DTickDataBeforeBidOfferResponse.data"></a>
-
-#### data
-
-回覆物件 TickDataBeforeBidOffer
 

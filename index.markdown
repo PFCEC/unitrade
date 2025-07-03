@@ -41,9 +41,12 @@ https://colab.research.google.com/github/PFCEC/unitrade/blob/main/%E6%95%99%E5%A
 
 ### 1.7 安裝 `unitrade` 套件
 - 使用以下命令安裝 `unitrade` 套件：
-  ```bash
-  pip install unitrade
-  ```
+```bash
+pip install unitrade
+```
+
+- 支援Python版本: 3.7、3.8、3.9、3.10、3.11、3.12
+- 支援 OS: Linux, macOS, Windows
 
 ### 1.8 開始使用
 - 完成以上準備後，您可以開始使用API進行交易操作。

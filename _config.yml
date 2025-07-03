@@ -95,6 +95,7 @@ callouts:
   warning:
     title: Warning
     color: red
+footer_content: ""
 
 # Exclude from processing.
 # The following items will not be processed, by default.

@@ -1,9 +1,9 @@
 ---  
-nav_order: 6
+nav_order: 10
 parent: API Reference  
 title: "daccount"
 --- 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/just-the-docs-custom.css">
+<link rel="stylesheet" href="/assets/css/just-the-docs-custom.css">
 內期帳務
 提供保證金.未平倉.即時部位查詢
 
@@ -41,13 +41,13 @@ class DAccount()
 def get_current_server()
 ```
 
-目前連結主機IP 和 PORT
-##### Returns 
-
-| Name | Type | Description |
-| ------ | ------ | ------------- |
-| host | str | 主機IP |    
-| port | str | 主機Port |
+目前連結主機
+##### 回傳值 str 
+##### 範例
+```python
+server = daccount.get_current_server()
+print(server)  # 輸出目前連結的主機 
+```
 
 <a id="daccount.DAccount.get_server_list"></a>
 
@@ -58,12 +58,19 @@ def get_server_list()
 ```
 
 透過可連結主機
-##### Returns dict[Server]
+##### 回傳值 dict[Server]: 
 
-| Name | Type | Description |
-| ------| ------ | ------------- |
-| key | str | servername |    
-| value | Server | Server ip:str / port:int |
+| 型別 | 說明 |
+| ------ | ------------- |
+| key | str | servername |
+| value | Server | 主機物件 |
+
+範例
+```python
+server_list = unitrade.daccount.get_server_list()
+for servername, server in server_list.items():
+    print(f'主機名稱: {servername})
+```
 
 <a id="daccount.DAccount.set_sever_by_name"></a>
 
@@ -73,12 +80,28 @@ def get_server_list()
 def set_sever_by_name(servername)
 ```
 
-透過主機名稱連結主機
-##### Parameters 
+透過主機名稱切換連結主機
+##### 參數 
 
-| Name | Type | Description |
-| ------ | ------ | ------------- |
+| 參數 | 型別 | 說明 |
+| ------ | ------ | ------------- |    
 | servername | str | 主機名稱 |
+
+##### 回傳值 bool
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| True | 切換連線成功 |
+| False | 切換連線失敗 |
+
+##### 範例
+```python
+success = unitrade.daccount.set_sever_by_name("xxx")
+if success:
+    print("連線成功")
+else:
+    print("連線失敗")
+```
 
 <a id="daccount.DAccount.get_margin"></a>
 
@@ -89,20 +112,27 @@ def get_margin(actno, currency) -> DMarginResponse
 ```
 
 查詢保證金
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
-| ------ | ------ | ------------- |
-| actno | str | 帳號 |    
-| currency | str | 幣別 |    
+| 參數 | 型別 | 說明 |
+| ------ | ------ | ------------- |     
+| actno | str | 帳號 |
+| currency | str | 幣別 |
 
-##### Returns MarginResponse
+##### 回傳值 MarginResponse
 
-| Type | Description |
+| 型別 | 說明 |
 | ------ | ------------- |
-| bool | True 成功 /False 失敗 |    
-| str | 錯誤訊息 |    
-| List[Margin] | 保證金集合物件 |
+| bool | True 成功 /False 失敗 |
+| str | 錯誤訊息 |
+| List[DMargin] | 保證金物件 |
+
+##### 範例
+```python       
+margin_response = unitrade.daccount.get_margin("1234567", "TWD")
+# DMarginResponse(ok=True, error='', data=
+# DMargin(total_count=1, current_count=1, network_id='A00009z103', company='F008000', actno='1234567', account_date='20250619', currency='NTT', exrate=1.0, lctdab=216432431.0, ltdab=212177921.0, dwamt=0.0, osprtlos=0.0, prtlos=4254510.0, optosprtlos=0.0, optprtlos=14741150.0, tpremium=0.0, orignfee=0.0, ctaxamt=0.0, ordpremium=0.0, ctdab=216432431.0, ordiamt=0.0, iamt=19357150.0, mamt=15208800.0, ordcexcess=197075281.0, bpremium=25055200.0, spremium=1819050.0, optequity=239668581.0, inirate=1118.1007, matrate=1423.0737, liquidation_ratio=1238.1398, twdoptequity=239668581.0, twdinirate='1118.1', twdordexcess=197075281.0, securities_payment_amount=0.0, tmp1prices=0.0, optrate=562.69, update_date='20250619', update_time='094552', securities_valuation='0', excerciseprice=0.0, transaction_total_quota=500000.0, excess_margin=0.0, data_source_type='RT', night_session_closing_ctdab=225141351.0, night_session_optrate=628.4, night_session_optequity=248414576.0, night_session_iamt=19332950.0, night_session_mamt=15184600.0))
+```
 
 <a id="daccount.DAccount.get_position"></a>
 
@@ -113,19 +143,28 @@ def get_position(actno, groupid='', trader='') -> DPositionResponse
 ```
 
 查詢即時部位
-##### Parameters 
+##### 參數 
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| actno | str | 帳號 |     
+| actno | str | 帳號 |
 
-##### Returns PositionResponse
+##### 回傳值 DPositionResponse
 
-| Type | Description |
+| 型別 | 說明 |
 | ------ | ------------- |
-| bool | True 成功 /False 失敗 |    
-| str | 錯誤訊息 |    
-| List[Position] | 即時部位集合物件 |
+| bool | True 成功 <br/>False 失敗 |
+| str | 錯誤訊息 |
+| List[DPosition] | 即時部位集合物件 |
+
+##### 範例
+```python
+position_response = unitrade.daccount.get_position("1234567")
+# DPositionResponse(ok=True, error='', data=[
+#  DPosition(total_count=32, current_count=1, network_id='A00009z107', company='F008000', actno='1234567', currency='NTT', product='NY1', month='202507', call_put='', strike_price=0.0, ot_qty_b=0, ot_qty_s=39, noworder_qty_b=0, noworder_qty_s=0, nowmatch_qty_b=0, nowmatch_qty_s=0, today_close_position=0, current_buy_open_position=0, current_sell_open_position=39, combined_buy_balance=0.0, combined_sell_balance=0.0, open_buy_position_average_cost=0.0, open_sell_position_average_cost=48.4425, buyer_IAMT=0.0, seller_IAMT=6123000.0, buyer_MAMT=0.0, seller_MAMT=4719000.0, product_base_number=40000, reference_realPrice=43.82, close_position_pnl=0.0, product_name='元大台50 107', buy_spread_points=0.0, sell_spread_points=4.6225, floating_pnl=7211100.0, data_source_type='RT', productkind='1', productid='NY1G5'),
+#  DPosition(total_count=32, current_count=2, network_id='A00009z107', company='F008000', actno='1234567', currency='NTT', product='NYF', month='202507', call_put='', strike_price=0.0, ot_qty_b=0, ot_qty_s=42, noworder_qty_b=0, noworder_qty_s=0, nowmatch_qty_b=0, nowmatch_qty_s=0, today_close_position=0, current_buy_open_position=0, current_sell_open_position=42, combined_buy_balance=0.0, combined_sell_balance=0.0, open_buy_position_average_cost=0.0, open_sell_position_average_cost=41.4404, buyer_IAMT=0.0, seller_IAMT=1680000.0, buyer_MAMT=0.0, seller_MAMT=1302000.0, product_base_number=10000, reference_realPrice=43.82, close_position_pnl=0.0, product_name='元大台灣5007', buy_spread_points=0.0, sell_spread_points=-2.3796, floating_pnl=-999432.0, data_source_type='RT', productkind='1', productid='NYFG5')
+#  ...])
+```
 
 <a id="daccount.DAccount.get_unliquidation"></a>
 
@@ -139,20 +178,30 @@ def get_unliquidation(actno,
 ```
 
 查詢未平倉彙總
-##### Parameters 
+##### 參數
 
-| Name | Type | Description |
+| 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
-| actno | str | 帳號 |     
-| currency | str | 幣別 |  
+| actno | str | 帳號 |
+| currency | str | 幣別 |
 
-##### Returns UnliquidationResponse
+##### 回傳值 DUnliquidationResponse
 
-| Type | Description |
+| 型別 | 說明 |
 | ------ | ------------- |
-| bool | True 成功 /False 失敗 |    
-| str | 錯誤訊息 |    
-| List[Unliquidation] | 未平倉彙總集合物件 |
+| bool | True: 成功<br/>False: 失敗 |
+| str | 錯誤訊息 |
+| List[DUnliquidation] | 未平倉彙總集合物件 |
+
+##### 範例
+```python
+unliquidation_response = unitrade.daccount.get_unliquidation("1234567")
+# DUnliquidationResponse(ok=True, error='', data=[
+# DUnliquidation(total_count=32, current_count=1, network_id='A00009z100', company='F008000',actno='1234567', productid='NY1G5', bs='S', totalotqty=39, avgmatchprice=48.4426, realprice=43.82, reftotalpl=6619200.0, ctaxamt=1507.0, commission_fee=681.0, net_profit_loss=6617012.0, leg1_product_category='F', leg1_product_date='202507', leg1_strike_price='0', leg1_call_put='', leg1_buy_sell='S', leg1_average_price=48.4426, leg2_product_category='', leg2_product_date='', leg2_strike_price='0', leg2_call_put='', leg2_buy_sell='', leg2_average_price=0.0, product_name='元大台50 107', leg1_productid='NY1', leg2_productid='', multiname='', data_source_type='RT'), 
+# DUnliquidation(total_count=32, current_count=2, network_id='A00009z100', company='F008000', actno='1234567', productid='NYFG5', bs='S', totalotqty=42, avgmatchprice=41.4405, realprice=43.82, reftotalpl=-1127400.0, ctaxamt=336.0, commission_fee=759.0, net_profit_loss=-1128495.0, leg1_product_category='F', leg1_product_date='202507', leg1_strike_price='0', leg1_call_put='', leg1_buy_sell='S', leg1_average_price=41.4405, leg2_product_category='', leg2_product_date='', leg2_strike_price='0', leg2_call_put='', leg2_buy_sell='', leg2_average_price=0.0, product_name='元大台灣5007', leg1_productid='NYF', leg2_productid='', multiname='', data_source_type='RT'),
+# ...
+# ])
+```
 
 <a id="daccount.DAccount.close"></a>
 
@@ -163,821 +212,4 @@ def close()
 ```
 
 關閉物件
-
----  
-nav_order: 6
-parent: API Reference  
-title: "daccount"
---- 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/just-the-docs-custom.css">
-內期帳務物件
-
-<a id="ddata.DMargin"></a>
-
-## DMargin Objects
-
-```python
-class DMargin()
-```
-
-內期保證金物件
-
-<a id="ddata.DMargin.total_count"></a>
-
-#### total\_count
-
-總筆數 int
-
-<a id="ddata.DMargin.current_count"></a>
-
-#### current\_count
-
-現在筆數 int
-
-<a id="ddata.DMargin.network_id"></a>
-
-#### network\_id
-
-網路序號 str
-
-<a id="ddata.DMargin.company"></a>
-
-#### company
-
-公司別 str
-
-<a id="ddata.DMargin.actno"></a>
-
-#### actno
-
-帳號 str
-
-<a id="ddata.DMargin.account_date"></a>
-
-#### account\_date
-
-帳務日期 str
-
-<a id="ddata.DMargin.currency"></a>
-
-#### currency
-
-幣別 str
-
-<a id="ddata.DMargin.exrate"></a>
-
-#### exrate
-
-匯率 float
-
-<a id="ddata.DMargin.lctdab"></a>
-
-#### lctdab
-
-昨日權益數 float
-
-<a id="ddata.DMargin.ltdab"></a>
-
-#### ltdab
-
-昨日餘額 float
-
-<a id="ddata.DMargin.dwamt"></a>
-
-#### dwamt
-
-存提 float
-
-<a id="ddata.DMargin.osprtlos"></a>
-
-#### osprtlos
-
-期貨平倉損益 float
-
-<a id="ddata.DMargin.prtlos"></a>
-
-#### prtlos
-
-未沖銷期貨浮動損益 float
-
-<a id="ddata.DMargin.optosprtlos"></a>
-
-#### optosprtlos
-
-選擇權平倉損益 float
-
-<a id="ddata.DMargin.optprtlos"></a>
-
-#### optprtlos
-
-選擇權未平倉損益 float
-
-<a id="ddata.DMargin.tpremium"></a>
-
-#### tpremium
-
-當日權利金支出收入 float
-
-<a id="ddata.DMargin.orignfee"></a>
-
-#### orignfee
-
-成交手續費 float
-
-<a id="ddata.DMargin.ctaxamt"></a>
-
-#### ctaxamt
-
-成交期交稅 float
-
-<a id="ddata.DMargin.ordpremium"></a>
-
-#### ordpremium
-
-委託預扣權利金 float
-
-<a id="ddata.DMargin.ctdab"></a>
-
-#### ctdab
-
-權益數 float
-
-<a id="ddata.DMargin.ordiamt"></a>
-
-#### ordiamt
-
-委託預扣原始保證金 float
-
-<a id="ddata.DMargin.iamt"></a>
-
-#### iamt
-
-原始保證金 float
-
-<a id="ddata.DMargin.mamt"></a>
-
-#### mamt
-
-維持保證金 float
-
-<a id="ddata.DMargin.ordcexcess"></a>
-
-#### ordcexcess
-
-可動用(出金) 保證金 float
-
-<a id="ddata.DMargin.bpremium"></a>
-
-#### bpremium
-
-買方選擇權市值 float
-
-<a id="ddata.DMargin.spremium"></a>
-
-#### spremium
-
-賣方選擇權市值 float
-
-<a id="ddata.DMargin.optequity"></a>
-
-#### optequity
-
-權益總值 float
-
-<a id="ddata.DMargin.inirate"></a>
-
-#### inirate
-
-原始比率 float
-
-<a id="ddata.DMargin.matrate"></a>
-
-#### matrate
-
-維持比率 float
-
-<a id="ddata.DMargin.liquidation_ratio"></a>
-
-#### liquidation\_ratio
-
-清算比率 float
-
-<a id="ddata.DMargin.twdoptequity"></a>
-
-#### twdoptequity
-
-台幣權益總值 float
-
-<a id="ddata.DMargin.twdinirate"></a>
-
-#### twdinirate
-
-台幣原始比率 str
-
-<a id="ddata.DMargin.twdordexcess"></a>
-
-#### twdordexcess
-
-台幣可動用(出金)保證金 float
-
-<a id="ddata.DMargin.securities_payment_amount"></a>
-
-#### securities\_payment\_amount
-
-有價證券抵繳金額 float
-
-<a id="ddata.DMargin.tmp1prices"></a>
-
-#### tmp1prices
-
-加收保證金 float
-
-<a id="ddata.DMargin.optrate"></a>
-
-#### optrate
-
-風險指標 float
-
-<a id="ddata.DMargin.update_date"></a>
-
-#### update\_date
-
-資料更新日期 str
-
-<a id="ddata.DMargin.update_time"></a>
-
-#### update\_time
-
-資料更新時間 str
-
-<a id="ddata.DMargin.securities_valuation"></a>
-
-#### securities\_valuation
-
-有價證券評價價值 str
-
-<a id="ddata.DMargin.excerciseprice"></a>
-
-#### excerciseprice
-
-到期履約損益 float
-
-<a id="ddata.DMargin.transaction_total_quota"></a>
-
-#### transaction\_total\_quota
-
-交易總額度 float
-
-<a id="ddata.DMargin.excess_margin"></a>
-
-#### excess\_margin
-
-超額/追繳保證金 float
-
-<a id="ddata.DMargin.data_source_type"></a>
-
-#### data\_source\_type
-
-資料來源類別 str
-
-<a id="ddata.DMargin.night_session_closing_ctdab"></a>
-
-#### night\_session\_closing\_ctdab
-
-夜盤收盤權益數 float
-
-<a id="ddata.DMargin.night_session_optrate"></a>
-
-#### night\_session\_optrate
-
-夜盤風險指標 float
-
-<a id="ddata.DMargin.night_session_optequity"></a>
-
-#### night\_session\_optequity
-
-夜盤權利總值 float
-
-<a id="ddata.DMargin.night_session_iamt"></a>
-
-#### night\_session\_iamt
-
-夜盤原始保證金 float
-
-<a id="ddata.DMargin.night_session_mamt"></a>
-
-#### night\_session\_mamt
-
-夜盤維持保證金 float
-
-<a id="ddata.DMarginResponse"></a>
-
-## DMarginResponse Objects
-
-```python
-@dataclass
-class DMarginResponse()
-```
-
-保證金查詢回覆物件
-
-<a id="ddata.DMarginResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DMarginResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DMarginResponse.data"></a>
-
-#### data
-
-回覆物件 List[DMargin]
-
-<a id="ddata.DPosition"></a>
-
-## DPosition Objects
-
-```python
-@dataclass
-class DPosition()
-```
-
-內期即時部位物件
-
-<a id="ddata.DPosition.total_count"></a>
-
-#### total\_count
-
-總筆數 int
-
-<a id="ddata.DPosition.current_count"></a>
-
-#### current\_count
-
-現在筆數 int
-
-<a id="ddata.DPosition.network_id"></a>
-
-#### network\_id
-
-網路序號 str
-
-<a id="ddata.DPosition.company"></a>
-
-#### company
-
-公司別 str
-
-<a id="ddata.DPosition.actno"></a>
-
-#### actno
-
-帳號 str
-
-<a id="ddata.DPosition.currency"></a>
-
-#### currency
-
-幣別 str
-
-<a id="ddata.DPosition.product"></a>
-
-#### product
-
-商品 str
-
-<a id="ddata.DPosition.month"></a>
-
-#### month
-
-月份 str
-
-<a id="ddata.DPosition.call_put"></a>
-
-#### call\_put
-
-Call Put str
-
-<a id="ddata.DPosition.strike_price"></a>
-
-#### strike\_price
-
-履約價 float
-
-<a id="ddata.DPosition.ot_qty_b"></a>
-
-#### ot\_qty\_b
-
-前日買進留倉 int
-
-<a id="ddata.DPosition.ot_qty_s"></a>
-
-#### ot\_qty\_s
-
-前日賣出留倉 int
-
-<a id="ddata.DPosition.noworder_qty_b"></a>
-
-#### noworder\_qty\_b
-
-本日買進委託 int
-
-<a id="ddata.DPosition.noworder_qty_s"></a>
-
-#### noworder\_qty\_s
-
-本日賣出委託 int
-
-<a id="ddata.DPosition.nowmatch_qty_b"></a>
-
-#### nowmatch\_qty\_b
-
-本日買進成交 int
-
-<a id="ddata.DPosition.nowmatch_qty_s"></a>
-
-#### nowmatch\_qty\_s
-
-本日賣出成交 int
-
-<a id="ddata.DPosition.today_close_position"></a>
-
-#### today\_close\_position
-
-本日平倉 int
-
-<a id="ddata.DPosition.current_buy_open_position"></a>
-
-#### current\_buy\_open\_position
-
-目前買進留倉 int
-
-<a id="ddata.DPosition.current_sell_open_position"></a>
-
-#### current\_sell\_open\_position
-
-目前賣出留倉 int
-
-<a id="ddata.DPosition.combined_buy_balance"></a>
-
-#### combined\_buy\_balance
-
-組合買進餘額 float
-
-<a id="ddata.DPosition.combined_sell_balance"></a>
-
-#### combined\_sell\_balance
-
-組合賣出餘額 float
-
-<a id="ddata.DPosition.open_buy_position_average_cost"></a>
-
-#### open\_buy\_position\_average\_cost
-
-留倉買進平均成本 float
-
-<a id="ddata.DPosition.open_sell_position_average_cost"></a>
-
-#### open\_sell\_position\_average\_cost
-
-留倉賣出平均成本 float
-
-<a id="ddata.DPosition.buyer_IAMT"></a>
-
-#### buyer\_IAMT
-
-買方原始保證金 float
-
-<a id="ddata.DPosition.seller_IAMT"></a>
-
-#### seller\_IAMT
-
-賣方原始保證金 float
-
-<a id="ddata.DPosition.buyer_MAMT"></a>
-
-#### buyer\_MAMT
-
-買方維持保證金 float
-
-<a id="ddata.DPosition.seller_MAMT"></a>
-
-#### seller\_MAMT
-
-賣方維持保證金 float
-
-<a id="ddata.DPosition.product_base_number"></a>
-
-#### product\_base\_number
-
-商品基數 int
-
-<a id="ddata.DPosition.reference_realPrice"></a>
-
-#### reference\_realPrice
-
-參考即時價 float
-
-<a id="ddata.DPosition.close_position_pnl"></a>
-
-#### close\_position\_pnl
-
-平倉損益 float
-
-<a id="ddata.DPosition.product_name"></a>
-
-#### product\_name
-
-商品名稱 str
-
-<a id="ddata.DPosition.buy_spread_points"></a>
-
-#### buy\_spread\_points
-
-價差點數買
-
-<a id="ddata.DPosition.sell_spread_points"></a>
-
-#### sell\_spread\_points
-
-價差點數賣 float
-
-<a id="ddata.DPosition.floating_pnl"></a>
-
-#### floating\_pnl
-
-浮動損益 float
-
-<a id="ddata.DPosition.productkind"></a>
-
-#### productkind
-
-資料來源類別 str
-
-<a id="ddata.DPosition.productid"></a>
-
-#### productid
-
-商品代碼 str
-
-<a id="ddata.DPositionResponse"></a>
-
-## DPositionResponse Objects
-
-```python
-@dataclass
-class DPositionResponse()
-```
-
-即時部位查詢回覆物件
-
-<a id="ddata.DPositionResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DPositionResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DPositionResponse.data"></a>
-
-#### data
-
-回覆物件 List[Position]
-
-<a id="ddata.DUnliquidation"></a>
-
-## DUnliquidation Objects
-
-```python
-@dataclass
-class DUnliquidation()
-```
-
-內期未平倉物件
-
-<a id="ddata.DUnliquidation.total_count"></a>
-
-#### total\_count
-
-總筆數 int
-
-<a id="ddata.DUnliquidation.current_count"></a>
-
-#### current\_count
-
-現在筆數 int
-
-<a id="ddata.DUnliquidation.network_id"></a>
-
-#### network\_id
-
-網路序號 str
-
-<a id="ddata.DUnliquidation.company"></a>
-
-#### company
-
-公司別 str
-
-<a id="ddata.DUnliquidation.actno"></a>
-
-#### actno
-
-帳號 str
-
-<a id="ddata.DUnliquidation.productid"></a>
-
-#### productid
-
-商品代碼 str
-
-<a id="ddata.DUnliquidation.bs"></a>
-
-#### bs
-
-買賣別 str
-
-<a id="ddata.DUnliquidation.totalotqty"></a>
-
-#### totalotqty
-
-留倉口數 int
-
-<a id="ddata.DUnliquidation.avgmatchprice"></a>
-
-#### avgmatchprice
-
-成交均價 float
-
-<a id="ddata.DUnliquidation.realprice"></a>
-
-#### realprice
-
-即時價 float
-
-<a id="ddata.DUnliquidation.reftotalpl"></a>
-
-#### reftotalpl
-
-浮動損益 float
-
-<a id="ddata.DUnliquidation.ctaxamt"></a>
-
-#### ctaxamt
-
-交易稅 float
-
-<a id="ddata.DUnliquidation.commission_fee"></a>
-
-#### commission\_fee
-
-手續費 float
-
-<a id="ddata.DUnliquidation.net_profit_loss"></a>
-
-#### net\_profit\_loss
-
-淨損益 float
-
-<a id="ddata.DUnliquidation.leg1_product_category"></a>
-
-#### leg1\_product\_category
-
-腳一商品類別
-
-<a id="ddata.DUnliquidation.leg1_product_date"></a>
-
-#### leg1\_product\_date
-
-腳一商品年月
-
-<a id="ddata.DUnliquidation.leg1_strike_price"></a>
-
-#### leg1\_strike\_price
-
-腳一履約價
-
-<a id="ddata.DUnliquidation.leg1_call_put"></a>
-
-#### leg1\_call\_put
-
-腳一買賣權
-
-<a id="ddata.DUnliquidation.leg1_buy_sell"></a>
-
-#### leg1\_buy\_sell
-
-腳一買賣別
-
-<a id="ddata.DUnliquidation.leg1_average_price"></a>
-
-#### leg1\_average\_price
-
-腳一成交均價 float
-
-<a id="ddata.DUnliquidation.leg2_product_category"></a>
-
-#### leg2\_product\_category
-
-腳二商品類別
-
-<a id="ddata.DUnliquidation.leg2_product_date"></a>
-
-#### leg2\_product\_date
-
-腳二商品年月
-
-<a id="ddata.DUnliquidation.leg2_strike_price"></a>
-
-#### leg2\_strike\_price
-
-腳二履約價
-
-<a id="ddata.DUnliquidation.leg2_call_put"></a>
-
-#### leg2\_call\_put
-
-腳二買賣權
-
-<a id="ddata.DUnliquidation.leg2_buy_sell"></a>
-
-#### leg2\_buy\_sell
-
-腳二買賣別
-
-<a id="ddata.DUnliquidation.leg2_average_price"></a>
-
-#### leg2\_average\_price
-
-腳二成交均價 float
-
-<a id="ddata.DUnliquidation.product_name"></a>
-
-#### product\_name
-
-商品名稱 str
-
-<a id="ddata.DUnliquidation.leg1_productid"></a>
-
-#### leg1\_productid
-
-腳一商品 str
-
-<a id="ddata.DUnliquidation.leg2_productid"></a>
-
-#### leg2\_productid
-
-腳二商品 str
-
-<a id="ddata.DUnliquidation.multiname"></a>
-
-#### multiname
-
-複式單策略名稱 str
-
-<a id="ddata.DUnliquidation.data_source_type"></a>
-
-#### data\_source\_type
-
-資料來源類別 str
-
-<a id="ddata.DUnliquidationResponse"></a>
-
-## DUnliquidationResponse Objects
-
-```python
-@dataclass
-class DUnliquidationResponse()
-```
-
-未平倉查詢回覆物件
-
-<a id="ddata.DUnliquidationResponse.ok"></a>
-
-#### ok
-
-是否成功 bool
-
-<a id="ddata.DUnliquidationResponse.error"></a>
-
-#### error
-
-錯誤訊息 str
-
-<a id="ddata.DUnliquidationResponse.data"></a>
-
-#### data
-
-回覆物件 List[TickDataSettle]
 
