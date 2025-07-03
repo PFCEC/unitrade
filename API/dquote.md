@@ -304,6 +304,7 @@ def query_tick_data_before_trade(productid) -> DTickDataBeforeTradeResponse
 | productid | str | 商品代碼 |
 
 ##### 回傳值 DTickDataBeforeTradeResponse
+
 | 型別 | 說明 |
 | ------ | ------------- |
 | ok | bool | 是否成功 |

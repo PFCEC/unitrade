@@ -221,7 +221,7 @@ def query_tick_data(item) -> TickDataResponse
 | ------ | ------------- |
 | ok | bool | 是否成功 |
 | error | str | 錯誤訊息 |
-| data | [TickData]({{ "/API/squote_data/`tickdata`-objects" | relative_url }}) | 即時行情資訊 |
+| data | TickData | 即時行情資訊 |
 
 ##### 範例
 ```python
@@ -326,6 +326,7 @@ def query_otc_tick_open_close(item) -> TickDataOpenCloseResponse
 
 查詢otc最後普通股競價交易開(收)盤價資料資訊
 ##### 參數 
+
 | 參數 | 型別 | 說明 |
 | ------ | ------ | ------------- |
 | item | str | 股票代碼 |
