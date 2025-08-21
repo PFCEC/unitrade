@@ -75,6 +75,12 @@ class DQuote()
 
 開盤價事件..傳入物件:DTickDataOpen
 
+<a id="dquote.DQuote.on_tick_data_settle"></a>
+
+#### on\_tick\_data\_settle
+
+收盤行情資料訊息含結算價及未平倉合約數事件..傳入物件:DTickDataSettle
+
 <a id="dquote.DQuote.get_current_server"></a>
 
 #### get\_current\_server
@@ -434,6 +440,35 @@ response = unitrade.dquote.query_tick_data_before_bid_offer("TXFG5")
 # DTickDataBeforeBidOfferResponse(ok=True, error='', data=DTickDataBeforeBidOffer(commodityid='TXFG5', bp1=21810.0, bp2=21809.0, bp3=21808.0, bp4=21807.0, bp5=21805.0, bq1=1, bq2=5, bq3=2, bq4=3, bq5=3, sp1=21811.0, sp2=21815.0, sp3=21816.0, sp4=21819.0, sp5=21821.0, sq1=1, sq2=10, sq3=1, sq4=1, sq5=1))
 ```
 
+<a id="dquote.DQuote.query_tick_data_settle"></a>
+
+#### query\_tick\_data\_settle
+
+```python
+def query_tick_data_settle(productid) -> DTickDataSettleResponse
+```
+
+查詢收盤行情資料訊息含結算價及未平倉合約數
+##### 參數 
+
+| 參數 | 型別 | 說明 |
+| ------ | ------ | ------------- |
+| productid | str | 商品代碼 |
+
+##### 回傳值 DTickDataSettleResponse
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | DTickDataSettle | 收盤行情資料訊息含結算價及未平倉合約數  |
+
+##### 範例
+```python
+response = unitrade.dquote.query_tick_data_settle("TXFG5")
+# DTickDataSettleResponse(ok=True, error='', data=DTickDataSettle(commodityid='TXFH5', period_high_price=23414.0, period_low_price=20375.0, daily_high_price=23406.0, daily_low_price=22977.0, open_price=23241.0, last_bid_price=22990.0, last_ask_price=22994.0, close_price=22990.0, total_bid_orders=68643, total_bid_volume=106919, total_ask_orders=66629, total_ask_volume=109130, total_trades=141625, total_trade_volume=105402, merged_bid_orders=69154, merged_bid_volume=109064, merged_ask_orders=67274, merged_ask_volume=110849, merged_volume=105411, settlement_price=22996.0, open_interest=95637, block_trade_volume=0))
+```
+
 <a id="dquote.DQuote.subscribe_trade_bid_offer"></a>
 
 #### subscribe\_trade\_bid\_offer
@@ -610,6 +645,85 @@ def unsubscribe_index_data(kind, index) -> Tuple[bool, str]
 | bool | 是否成功 |    
 | str | 錯誤訊息 |
 
+<a id="dquote.DQuote.subscribe_settle"></a>
+
+#### subscribe\_settle
+
+```python
+def subscribe_settle(productid) -> Tuple[bool, str]
+```
+
+註冊收盤行情資料訊息含結算價及未平倉合約數
+##### Parameters 
+
+| Name | Type | Description |
+| ------ | ------ | ------------- |
+| productid | str | 商品代碼 |  
+
+##### Returns 
+
+| Type | Description |
+| ------ | ------------- |
+| bool | 是否成功 |    
+| str | 錯誤訊息 |
+
+<a id="dquote.DQuote.unsubscribe_settle"></a>
+
+#### unsubscribe\_settle
+
+```python
+def unsubscribe_settle(productid) -> Tuple[bool, str]
+```
+
+反註收盤行情資料訊息含結算價及未平倉合約數
+##### Parameters 
+
+| Name | Type | Description |
+| ------ | ------ | ------------- |
+| productid | str | 商品代碼 |  
+
+##### Returns 
+
+| Type | Description |
+| ------ | ------------- |
+| bool | 是否成功 |    
+| str | 錯誤訊息 |
+
+<a id="dquote.DQuote.get_history_bardata"></a>
+
+#### get\_history\_bardata
+
+```python
+def get_history_bardata(interval, startdate, enddate, productkind, productid,
+                        count) -> BarDataResponse
+```
+
+查詢歷史K線資料
+##### Parameters 
+
+| Name | Type | Description |
+| ------ | ------ | ------------- |
+| interval | str | D:日K、1K:分K |
+| startdate | datetime | 起始日期 (格式: datetime(YYYY, MM, DD, HH, mm ,ss)) |
+| enddate | datetime | 結束日期 (格式: datetime(YYYY, MM, DD, HH, mm ,ss)) |
+| productkind | str | 商品種類 1:期貨 2:選擇權 4:期貨價差 |
+| productid | str | 商品代碼 |
+| count | int | 取得K線數量 |
+
+##### Returns BarDataResponse
+
+| Type | Description |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | List[BarData] | 歷史K線資料 |
+
+##### 範例
+```python
+response = unitrade.dquote.get_history_bardata("1K", datetime(2025, 6, 10, 0, 0, 0), datetime(2025, 7, 7, 0, 0, 0), "1", "MXFG5", 2)
+# BarDataResponse(ok=True, error='', data=[BarData(productId='MXFG5', productkind=None, date='20250627', time='084500', open=22199.0, high=22206.0, low=22186.0, close=22191.0, volume=1608), BarData(productId='MXFG5', productkind=None, date='20250627', time='084600', open=22191.0, high=22195.0, low=22178.0, close=22187.0, volume=761)])
+```
+
 <a id="dquote.DQuote.close"></a>
 
 #### close
@@ -669,6 +783,12 @@ class Format()
 #### I082\_HEAD
 
 盤前委託簿揭示
+
+<a id="dquote.Format.I072_HEAD"></a>
+
+#### I072\_HEAD
+
+收盤行情資料訊息含結算價及未平倉合約數
 
 <a id="dquote.Format.I020"></a>
 
@@ -741,4 +861,10 @@ class Format()
 #### X080
 
 委託簿揭示訊息
+
+<a id="dquote.Format.I072"></a>
+
+#### I072
+
+收盤行情資料訊息含結算價及未平倉合約數
 

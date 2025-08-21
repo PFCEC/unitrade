@@ -814,5 +814,28 @@ class DUnliquidationResponse()
 
 #### data
 
-回覆物件 List[DUnliquidation]
+回覆物件 List[TickDataSettle]
+
+<a id="ddata.Response"></a>
+
+## Response Objects
+
+```python
+@dataclass
+class Response()
+```
+
+回覆物件
+
+<a id="ddata.Response.ok"></a>
+
+#### ok
+
+是否成功 bool
+
+<a id="ddata.Response.error"></a>
+
+#### error
+
+錯誤訊息 str
 

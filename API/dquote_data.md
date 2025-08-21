@@ -511,6 +511,184 @@ class DTickDataOpen()
 
 開盤量
 
+<a id="ddata.DTickDataSettle"></a>
+
+## DTickDataSettle Objects
+
+```python
+@dataclass
+class DTickDataSettle()
+```
+
+收盤行情資料訊息含結算價及未平倉合約數
+
+<a id="ddata.DTickDataSettle.commodityid"></a>
+
+#### commodityid
+
+商品代碼 str
+
+<a id="ddata.DTickDataSettle.period_high_price"></a>
+
+#### period\_high\_price
+
+該期最高價 float
+
+<a id="ddata.DTickDataSettle.period_low_price"></a>
+
+#### period\_low\_price
+
+該期最低價 float
+
+<a id="ddata.DTickDataSettle.daily_high_price"></a>
+
+#### daily\_high\_price
+
+當日最高價 float
+
+<a id="ddata.DTickDataSettle.daily_low_price"></a>
+
+#### daily\_low\_price
+
+當日最低價 float
+
+<a id="ddata.DTickDataSettle.open_price"></a>
+
+#### open\_price
+
+開盤價 float
+
+<a id="ddata.DTickDataSettle.last_bid_price"></a>
+
+#### last\_bid\_price
+
+最後買價 float
+
+<a id="ddata.DTickDataSettle.last_ask_price"></a>
+
+#### last\_ask\_price
+
+最後賣價 float
+
+<a id="ddata.DTickDataSettle.close_price"></a>
+
+#### close\_price
+
+收盤價 float
+
+<a id="ddata.DTickDataSettle.total_bid_orders"></a>
+
+#### total\_bid\_orders
+
+委託買進總筆數 int
+
+<a id="ddata.DTickDataSettle.total_bid_volume"></a>
+
+#### total\_bid\_volume
+
+委託買進總口數 int
+
+<a id="ddata.DTickDataSettle.total_ask_orders"></a>
+
+#### total\_ask\_orders
+
+委託賣出總筆數 int
+
+<a id="ddata.DTickDataSettle.total_ask_volume"></a>
+
+#### total\_ask\_volume
+
+委託賣出總口數 int
+
+<a id="ddata.DTickDataSettle.total_trades"></a>
+
+#### total\_trades
+
+總成交筆數 int
+
+<a id="ddata.DTickDataSettle.total_trade_volume"></a>
+
+#### total\_trade\_volume
+
+總成交口數 int
+
+<a id="ddata.DTickDataSettle.merged_bid_orders"></a>
+
+#### merged\_bid\_orders
+
+合併委託買進總筆數 int
+
+<a id="ddata.DTickDataSettle.merged_bid_volume"></a>
+
+#### merged\_bid\_volume
+
+合併委託買進總口數 int
+
+<a id="ddata.DTickDataSettle.merged_ask_orders"></a>
+
+#### merged\_ask\_orders
+
+合併委託賣出總筆數 int
+
+<a id="ddata.DTickDataSettle.merged_ask_volume"></a>
+
+#### merged\_ask\_volume
+
+合併委託賣出總口數 int
+
+<a id="ddata.DTickDataSettle.merged_volume"></a>
+
+#### merged\_volume
+
+合併總成交量 int
+
+<a id="ddata.DTickDataSettle.settlement_price"></a>
+
+#### settlement\_price
+
+結算價 float
+
+<a id="ddata.DTickDataSettle.open_interest"></a>
+
+#### open\_interest
+
+未平倉合約數 int
+
+<a id="ddata.DTickDataSettle.block_trade_volume"></a>
+
+#### block\_trade\_volume
+
+鉅額交易總成交量 int
+
+<a id="ddata.DTickDataSettleResponse"></a>
+
+## DTickDataSettleResponse Objects
+
+```python
+@dataclass
+class DTickDataSettleResponse()
+```
+
+收盤行情資料訊息含結算價及未平倉合約數回覆物件
+
+<a id="ddata.DTickDataSettleResponse.ok"></a>
+
+#### ok
+
+是否成功 bool
+
+<a id="ddata.DTickDataSettleResponse.error"></a>
+
+#### error
+
+錯誤訊息 str
+
+<a id="ddata.DTickDataSettleResponse.data"></a>
+
+#### data
+
+回覆物件 DTickDataSettle
+
 <a id="ddata.DTickDataTradeResponse"></a>
 
 ## DTickDataTradeResponse Objects
@@ -713,4 +891,98 @@ class DTickDataBeforeBidOfferResponse()
 #### data
 
 回覆物件 TickDataBeforeBidOffer
+
+<a id="ddata.BarData"></a>
+
+## BarData Objects
+
+```python
+@dataclass
+class BarData()
+```
+
+K線資料物件
+
+<a id="ddata.BarData.productId"></a>
+
+#### productId
+
+商品代碼 str
+
+<a id="ddata.BarData.productkind"></a>
+
+#### productkind
+
+商品種類 str
+
+<a id="ddata.BarData.date"></a>
+
+#### date
+
+日期 str
+
+<a id="ddata.BarData.time"></a>
+
+#### time
+
+時間 str
+
+<a id="ddata.BarData.open"></a>
+
+#### open
+
+開盤價 float
+
+<a id="ddata.BarData.high"></a>
+
+#### high
+
+最高價 float
+
+<a id="ddata.BarData.low"></a>
+
+#### low
+
+最低價 float
+
+<a id="ddata.BarData.close"></a>
+
+#### close
+
+收盤價 float
+
+<a id="ddata.BarData.volume"></a>
+
+#### volume
+
+成交量 int
+
+<a id="ddata.BarDataResponse"></a>
+
+## BarDataResponse Objects
+
+```python
+@dataclass
+class BarDataResponse()
+```
+
+K線資料回覆物件
+
+<a id="ddata.BarDataResponse.ok"></a>
+
+#### ok
+
+是否成功 bool
+
+<a id="ddata.BarDataResponse.error"></a>
+
+#### error
+
+錯誤訊息 str
+
+<a id="ddata.BarDataResponse.data"></a>
+
+#### data
+
+回覆物件 List[BarData]
 

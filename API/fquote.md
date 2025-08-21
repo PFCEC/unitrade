@@ -457,6 +457,45 @@ def unsubscribe(exchange: str, symbol: str, ym: str, cp: str,
 |bool|是否成功|
 |str|錯誤訊息|
 
+<a id="fquote.FQuote.get_history_bardata"></a>
+
+#### get\_history\_bardata
+
+```python
+def get_history_bardata(interval, startdate, enddate, productkind, exchange,
+                        symbol, ym, cp, strike, count) -> BarDataResponse
+```
+
+查詢歷史K線資料
+##### Parameters 
+
+| Name | Type | Description |
+| ------ | ------ | ------------- |
+| interval | str | D:日K、1K:分K |
+| startdate | datetime | 起始日期 (格式: datetime(YYYY, MM, DD, HH, mm ,ss)) |
+| enddate | datetime | 結束日期 (格式: datetime(YYYY, MM, DD, HH, mm ,ss)) |
+| productkind | str | 商品種類 1:期貨 2:選擇權 4:期貨價差 |
+| exchange | str | 交易所代號 |
+| symbol | str | 商品代號 |
+| ym | str | 年月 (格式: YYYYMM) |
+| cp | str | 選擇權類型 (F: 期貨, C: 選擇權Call, P: 選擇權Put) |
+| strike | str | 履約價(選擇權用) |
+| count | int | 取得K線數量 |
+
+##### Returns BarDataResponse
+
+| Type | Description |
+| ------ | ------------- |
+| ok | bool | 是否成功 |
+| error | str | 錯誤訊息 |
+| data | List[BarData] | 歷史K線資料 |
+
+##### 範例
+```python
+response = unitrade.fquote.get_history_bardata("1K", datetime(2025, 6, 10, 0, 0, 0), datetime(2025, 7, 7, 0, 0, 0), "1", "CMX", "GC", "202508", "F", "", 2)
+# BarDataResponse(ok=True, error='', data=[BarData(productId='CMX|GC|202508|F|', productkind=None, date='20250626', time='144500', open=3350.3, high=3351.1, low=3350.2, close=3350.6, volume=169), BarData(productId='CMX|GC|202508|F|', productkind=None, date='20250626', time='144600', open=3350.7, high=3351.4, low=3350.6, close=3351.3, volume=82)])
+```
+
 <a id="fquote.FQuote.close"></a>
 
 #### close

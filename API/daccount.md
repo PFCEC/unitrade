@@ -203,6 +203,82 @@ unliquidation_response = unitrade.daccount.get_unliquidation("1234567")
 # ])
 ```
 
+<a id="daccount.DAccount.get_combine"></a>
+
+#### get\_combine
+
+```python
+def get_combine(type, actno, comno1, comym1, strikeprice1, callput1, bs1, qty1,
+                comno2, comym2, strikeprice2, callput2, bs2, qty2) -> Response
+```
+
+申請組拆功能
+##### 參數 
+
+| 參數 | 型別 | 說明 |
+| ------ | ------ | ------------- |
+| type | str | 1:拆解 <br> 2:全部拆解 <br> 3:組合 |
+| actno | str | 帳號 |
+| comno1 | str | 商品代碼1 |
+| comym1 | str | 年月1 |
+| strikeprice1 | str | 履約價1 |
+| callput1 | str | Call/Put1 <br> C:Call <br> P:Put |
+| bs1 | str |  買賣別1<br> B:買<br> S:賣 |
+| qty1  | str |口數1 |
+| comno2 | str | 商品代碼2 |
+| comym2 | str | 年月2 |
+| strikeprice2 | float | 履約價2 |
+| callput2 | str | Call/Put2 <br> C:Call <br> P:Put |
+| bs2 | str |  買賣別2<br> B:買<br> S:賣 |
+| qty2  | str |口數2 | 
+
+##### 回傳值 Response 
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| bool | True 成功<br>False 失敗 |
+| str | 錯誤訊息 |
+
+##### 範例
+```python
+response = daccount.get_combine("3","帳號7碼","TXO","202507","21000","C","S",1,"TXO","202507","21000","P","S",1)
+# 組合成功範例:
+# Response(ok=True, error='')
+# 組合失敗範例
+# Response(ok=False, error='無此組合商品')
+```
+
+<a id="daccount.DAccount.get_net"></a>
+
+#### get\_net
+
+```python
+def get_net(actno) -> Response
+```
+
+申請買賣並存沖銷
+##### 參數  
+
+| 參數 | 型別 | 說明 |
+| ------ | ------ | ------------- |
+| actno | str | 帳號 |
+
+##### 回傳值 Response
+
+| 型別 | 說明 |
+| ------ | ------------- |
+| bool |  True: 成功<br> False: 失敗   |
+| str  |   錯誤訊息   |
+
+##### 範例
+```python
+response = daccount.get_net("帳號7碼")
+# 申請成功範例:
+# Response(ok=True, error='') 
+# 申請失敗範例
+# Response(ok=False, error='全組或全拆筆數為零')
+```
+
 <a id="daccount.DAccount.close"></a>
 
 #### close

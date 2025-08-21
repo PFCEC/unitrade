@@ -955,3 +955,97 @@ class FTickDataSettleResponse()
 
 回覆物件 TickDataSettle
 
+<a id="fdata.BarData"></a>
+
+## BarData Objects
+
+```python
+@dataclass
+class BarData()
+```
+
+K線資料物件
+
+<a id="fdata.BarData.productId"></a>
+
+#### productId
+
+商品代碼 str
+
+<a id="fdata.BarData.productkind"></a>
+
+#### productkind
+
+商品種類 str
+
+<a id="fdata.BarData.date"></a>
+
+#### date
+
+日期 str
+
+<a id="fdata.BarData.time"></a>
+
+#### time
+
+時間 str
+
+<a id="fdata.BarData.open"></a>
+
+#### open
+
+開盤價 float
+
+<a id="fdata.BarData.high"></a>
+
+#### high
+
+最高價 float
+
+<a id="fdata.BarData.low"></a>
+
+#### low
+
+最低價 float
+
+<a id="fdata.BarData.close"></a>
+
+#### close
+
+收盤價 float
+
+<a id="fdata.BarData.volume"></a>
+
+#### volume
+
+成交量 int
+
+<a id="fdata.BarDataResponse"></a>
+
+## BarDataResponse Objects
+
+```python
+@dataclass
+class BarDataResponse()
+```
+
+K線資料回覆物件
+
+<a id="fdata.BarDataResponse.ok"></a>
+
+#### ok
+
+是否成功 bool
+
+<a id="fdata.BarDataResponse.error"></a>
+
+#### error
+
+錯誤訊息 str
+
+<a id="fdata.BarDataResponse.data"></a>
+
+#### data
+
+回覆物件 List[BarData]
+
