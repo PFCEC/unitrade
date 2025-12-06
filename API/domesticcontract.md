@@ -25,7 +25,7 @@ class DomesticContract()
 
 #### month
 
-年月 str
+年月 str 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD)
 
 <a id="domesticcontract.DomesticContract.cp"></a>
 

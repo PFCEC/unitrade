@@ -220,13 +220,13 @@ def get_combine(type, actno, comno1, comym1, strikeprice1, callput1, bs1, qty1,
 | type | str | 1:拆解 <br> 2:全部拆解 <br> 3:組合 |
 | actno | str | 帳號 |
 | comno1 | str | 商品代碼1 |
-| comym1 | str | 年月1 |
+| comym1 | str | 年月1 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD) |
 | strikeprice1 | str | 履約價1 |
 | callput1 | str | Call/Put1 <br> C:Call <br> P:Put |
 | bs1 | str |  買賣別1<br> B:買<br> S:賣 |
 | qty1  | str |口數1 |
 | comno2 | str | 商品代碼2 |
-| comym2 | str | 年月2 |
+| comym2 | str | 年月2 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD) |
 | strikeprice2 | float | 履約價2 |
 | callput2 | str | Call/Put2 <br> C:Call <br> P:Put |
 | bs2 | str |  買賣別2<br> B:買<br> S:賣 |

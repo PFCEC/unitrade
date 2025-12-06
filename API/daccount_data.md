@@ -391,7 +391,7 @@ class DPosition()
 
 #### month
 
-月份 str
+月份 str 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD)
 
 <a id="ddata.DPosition.call_put"></a>
 
@@ -549,11 +549,17 @@ Call Put str
 
 浮動損益 float
 
+<a id="ddata.DPosition.data_source_type"></a>
+
+#### data\_source\_type
+
+資料來源類別 str
+
 <a id="ddata.DPosition.productkind"></a>
 
 #### productkind
 
-資料來源類別 str
+商品類別 str (1:期貨 2:選擇權 3:複式選擇權 4:複式期貨)
 
 <a id="ddata.DPosition.productid"></a>
 
@@ -689,31 +695,31 @@ class DUnliquidation()
 
 #### leg1\_product\_category
 
-腳一商品類別
+腳一商品類別 str
 
 <a id="ddata.DUnliquidation.leg1_product_date"></a>
 
 #### leg1\_product\_date
 
-腳一商品年月
+腳一商品年月 str 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD)
 
 <a id="ddata.DUnliquidation.leg1_strike_price"></a>
 
 #### leg1\_strike\_price
 
-腳一履約價
+腳一履約價 str
 
 <a id="ddata.DUnliquidation.leg1_call_put"></a>
 
 #### leg1\_call\_put
 
-腳一買賣權
+腳一買賣權 str
 
 <a id="ddata.DUnliquidation.leg1_buy_sell"></a>
 
 #### leg1\_buy\_sell
 
-腳一買賣別
+腳一買賣別 str
 
 <a id="ddata.DUnliquidation.leg1_average_price"></a>
 
@@ -725,31 +731,31 @@ class DUnliquidation()
 
 #### leg2\_product\_category
 
-腳二商品類別
+腳二商品類別 str
 
 <a id="ddata.DUnliquidation.leg2_product_date"></a>
 
 #### leg2\_product\_date
 
-腳二商品年月
+腳二商品年月 str 預設年月(格式YYYYMM) 但股票週選會放年月日(格式YYMMDD)
 
 <a id="ddata.DUnliquidation.leg2_strike_price"></a>
 
 #### leg2\_strike\_price
 
-腳二履約價
+腳二履約價 str
 
 <a id="ddata.DUnliquidation.leg2_call_put"></a>
 
 #### leg2\_call\_put
 
-腳二買賣權
+腳二買賣權 str
 
 <a id="ddata.DUnliquidation.leg2_buy_sell"></a>
 
 #### leg2\_buy\_sell
 
-腳二買賣別
+腳二買賣別 str
 
 <a id="ddata.DUnliquidation.leg2_average_price"></a>
 

@@ -250,9 +250,9 @@ def get_domestic_contracts(symbol, type) -> DomesticContractResponse
 
 ##### 範例
 ```python
-response = unitrade.get_domestic_contracts("TXF", "F")
-# [DomesticContract(prod_id='TXFG5', month='202507', cp=None, stikeprice=0, maxprice=24200, minprice=19700, premium=22000),
-#  DomesticContract(prod_id='TXFH5', month='202508', cp=None, stikeprice=0, maxprice=23933, minprice=19583, premium=21758),
+response = unitrade.get_domestic_contracts("TXF", "F") 
+# [DomesticContract(prod_id='TXFK5', month='202511', cp=None, stikeprice=0, maxprice=28360, minprice=23204, premium=25782, divdate='20251119'),
+#  DomesticContract(prod_id='TXFL5', month='202512', cp=None, stikeprice=0, maxprice=29317, minprice=23987, premium=26652, divdate='20251217'),
 #  ......] 
 ```
 
@@ -285,13 +285,13 @@ def get_foreign_contracts(exchange, symbol, type) -> ForeignContractResponse
 ```python
 response = unitrade.get_foreign_contracts("CME", "NQ", "F")
 # ForeignContractResponse(ok=True, error='', data=[
-#  ForeignContract(exchange='CME', symbol='NQ', type='F', monthyear='202506', strikeprice='0.0000000', cp='', lasttradedate='20250620'),
-#  ForeignContract(exchange='CME', symbol='NQ', type='F', monthyear='202509', strikeprice='0.0000000', cp='', lasttradedate='20250919'),
+#  ForeignContract(exchange='CME', symbol='NQ', type='F', monthyear='202512', strikeprice='0.0000000', cp='', lasttradedate='20251219', firsttradedate='20231215', deliverydate='20251219'),
+#  ForeignContract(exchange='CME', symbol='NQ', type='F', monthyear='202603', strikeprice='0.0000000', cp='', lasttradedate='20260321', firsttradedate='20251016', deliverydate='20260321'),            
 #  ...... )
 response = unitrade.get_foreign_contracts("CME", "ADO", "O")
 # ForeignContractResponse(ok=True, error='', data=[
-#  ForeignContract(exchange='CME', symbol='ADO', type='O', monthyear='202507', strikeprice='1600.0000000', cp='C', lasttradedate='20250703'),
-#  ForeignContract(exchange='CME', symbol='ADO', type='O', monthyear='202507', strikeprice='1600.0000000', cp='P', lasttradedate='20250703'),
+#  ForeignContract(exchange='CME', symbol='ADO', type='O', monthyear='202511', strikeprice='3150.0000000', cp='C', lasttradedate='20251107', firsttradedate='20211206', deliverydate='20251110'),
+#  ForeignContract(exchange='CME', symbol='ADO', type='O', monthyear='202511', strikeprice='3150.0000000', cp='P', lasttradedate='20251107', firsttradedate='20211206', deliverydate='20251110'),
 #  ...... )
 ```
 
