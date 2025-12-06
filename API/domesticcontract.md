@@ -57,3 +57,9 @@ CP str
 
 參考價 float
 
+<a id="domesticcontract.DomesticContract.divdate"></a>
+
+#### divdate
+
+結算日 (str)
+

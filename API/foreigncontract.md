@@ -57,3 +57,15 @@ call put str
 
 最後交易日 str
 
+<a id="foreigncontract.ForeignContract.firsttradedate"></a>
+
+#### firsttradedate
+
+第一通知日 (str)
+
+<a id="foreigncontract.ForeignContract.deliverydate"></a>
+
+#### deliverydate
+
+最後結算日 (str)
+
