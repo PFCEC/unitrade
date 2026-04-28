@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site.title | default: "Unitrade API" }}</title>
+    <!-- 引入 Tailwind CSS (僅在此頁面生效，不影響內頁) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ef4444, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-bg {
+            background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold">U
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">Unitrade <span
+                            class="text-xs text-gray-500 font-normal border border-gray-300 rounded px-1 ml-1">V1.0.0.5</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-600 hover:text-red-600 transition">功能亮點</a>
+                    <a href="#quickstart" class="text-gray-600 hover:text-red-600 transition">快速開始</a>
+                    <a href="{{ site.github.repository_url }}" target="_blank"
+                        class="text-gray-600 hover:text-black transition">GitHub</a>
+                </div>
+                <div>
+                    <!-- 這裡的連結通常指向您的第一篇教學文件 -->
+                    <a href="{{ '/開始/' | relative_url }}"
+                        class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-medium transition shadow-lg shadow-red-500/30">
+                        開始使用 Unitrade
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white pt-20 pb-24 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
+
+            <!-- Left: Value Prop -->
+            <div class="lg:w-1/2 z-10">
+                <div
+                    class="inline-flex items-center gap-2 bg-slate-800/50 border border-slate-700 rounded-full px-3 py-1 mb-6">
+                    <span class="flex h-2 w-2 rounded-full bg-green-400"></span>
+                    <span class="text-xs font-medium text-slate-300">系統狀態: 正常運作中</span>
+                </div>
+                <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                    專為量化交易打造的 <br>
+                    <span class="gradient-text">Python API</span>
+                </h1>
+                <p class="text-lg text-slate-400 mb-8 max-w-lg">
+                    拋棄繁瑣的 DLL 與 COM 元件。Unitrade 提供純粹、現代化的 Python 介面，支援國內期貨、選擇權與海外期貨的極速下單與即時報價。
+                </p>
+
+                <!-- Install Command -->
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="relative group cursor-pointer bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 font-mono text-sm text-slate-300 flex items-center gap-3 w-fit"
+                        onclick="copyInstall()">
+                        <span class="text-red-500">$</span> pip install unitrade
+                        <svg class="w-4 h-4 text-slate-500 group-hover:text-white transition" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span id="copy-msg"
+                            class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 transition">Copied!</span>
+                    </div>
+                    <a href="https://pypi.org/project/unitrade/" target="_blank"
+                        class="text-slate-300 hover:text-white underline decoration-slate-600 underline-offset-4">查看
+                        PyPI</a>
+                </div>
+            </div>
+
+            <!-- Right: Code Preview -->
+            <div class="lg:w-1/2 w-full z-10">
+                <div
+                    class="bg-[#1e1e1e] rounded-xl shadow-2xl border border-slate-700 overflow-hidden transform rotate-1 hover:rotate-0 transition duration-500">
+                    <div class="flex items-center gap-2 px-4 py-3 bg-[#2d2d2d] border-b border-black/20">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-2 text-xs text-gray-400 font-mono">trading_bot.py</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto">
+                        <pre><code class="language-python text-sm font-mono leading-relaxed"><span style="color:#c678dd">import</span> unitrade
+<span style="color:#c678dd">from</span> unitrade.unitrade <span style="color:#c678dd">import</span> *
+<span style="color:#c678dd">from</span> unitrade.quote.ddata <span style="color:#c678dd">import</span> *  
+
+<span style="color:#7f848e"># 1. 快速登入 (支援測試環境)</span>
+api = Unitrade()
+api.login(
+    url=URL_TEST, 
+    user=<span style="color:#98c379">"登入帳號"</span>, 
+    password=<span style="color:#98c379">"登入密碼"</span>,
+    ca_filename=<span style="color:#98c379">"憑證檔名"</span>,
+    ca_password=<span style="color:#98c379">"憑證密碼"</span>
+)
+<span style="color:#7f848e"># 2. 監聽即時報價</span>
+<span style="color:#c678dd">def</span> <span style="color:#61afef">on_tick_data_trade(tick: DTickDataTrade):</span>
+    <span style="color:#e06c75">print</span>(<span style="color:#98c379">tick</span>)
+api.dquote.on_tick_data_trade=on_tick_data_trade
+api.dquote.subscribe_trade_bid_offer(<span style="color:#98c379">"TXFL6"</span>)
+
+<span style="color:#7f848e"># 3. 極速下單 (大台指/買進/市價/1口)</span>
+order = DOrderObject()
+order.actno = actno#帳號 
+order.productid = "TXFL6"#商品代號
+order.bs = "B"#買賣別B/S
+order.ordertype = "L"#L:限價 M:市價 P:範圍市價
+order.price = 28000#委託價格
+order.orderqty = 1#數量
+order.ordercondition = "R"##委託種類 I:IOC R:ROD F:FOK
+order.opencloseflag = ""##開倉別 str 0:新倉 1:平倉 空白:自動
+order.dtrade="N"## Y:當沖 N:非當沖
+orderresponse=api.dtrade.order(order) 
+</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decorational Blob -->
+            <div
+                class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-red-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-orange-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000">
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Grid -->
+    <section id="features" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">為什麼選擇 Unitrade?</h2>
+                <p class="mt-4 text-gray-500">專為需要低延遲與高穩定性的交易者設計</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Feature 1 -->
+                <div
+                    class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-red-200 hover:shadow-xl hover:shadow-red-500/5 transition duration-300">
+                    <div
+                        class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mb-6 text-red-600 group-hover:scale-110 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">極速下單</h3>
+                    <p class="text-gray-600 leading-relaxed">底層優化核心，支援國內和國外期貨。即時回報系統確保您不錯過任何成交資訊。</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/5 transition duration-300">
+                    <div
+                        class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-6 text-orange-600 group-hover:scale-110 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">事件驅動架構</h3>
+                    <p class="text-gray-600 leading-relaxed">完整的 Event
+                        機制，讓您的策略能精準回應盤中變化，同時處理報價與下單。</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="group p-8 rounded-2xl bg-gray-50 border border-gray-100 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-500/5 transition duration-300">
+                    <div
+                        class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">跨平台支援</h3>
+                    <p class="text-gray-600 leading-relaxed">無論是 Windows 開發環境，還是 Linux 交易伺服器，Unitrade 都能完美運行。支援 Python
+                        3.7+。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Timeline -->
+    <section id="quickstart" class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">準備開始交易</h2>
+                <p class="mt-4 text-gray-500">只需五個步驟，即可開始您的程式交易之旅</p>
+            </div>
+
+            <div
+                class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+
+                <!-- Step 1 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-600 group-[.is-active]:text-white text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 font-bold z-10">
+                        1
+                    </div>
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <h3 class="font-bold text-slate-900 text-2xl">開立期貨帳號</h3>
+                        </div>
+                        <p class="text-gray-500 text-base">前往統一期貨官網完成線上開戶，並開通 API 交易權限。</p>
+                        <a href="https://www.pfcf.com.tw/eventweb/online/" target="_blank"
+                            class="text-red-600 text-base font-medium hover:underline mt-2 inline-block">前往開戶 &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-600 group-[.is-active]:text-white text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 font-bold z-10">
+                        2
+                    </div>
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <h3 class="font-bold text-slate-900 text-2xl">下載交易憑證</h3>
+                        </div>
+                        <p class="text-gray-500 text-base">登入憑證中心下載 `.pfx` 檔案，這將是您交易的數位簽章。</p>
+                        <a href="https://pki.pscnet.com.tw/"
+                            class="text-red-600 text-base font-medium hover:underline mt-2 inline-block">憑證中心 &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-600 group-[.is-active]:text-white text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 font-bold z-10">
+                        3
+                    </div>
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <h3 class="font-bold text-slate-900 text-2xl">安裝 Python 套件</h3>
+                        </div>
+                        <code
+                            class="bg-gray-100 px-2 py-1 rounded text-red-500 text-xm font-mono block w-fit mt-2">pip install unitrade</code>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-600 group-[.is-active]:text-white text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 font-bold z-10">
+                        4
+                    </div>
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <h3 class="font-bold text-slate-900 text-2xl">執行首次下單測試</h3>
+                        </div>
+                        <p class="text-gray-500 text-base">請向您的營業員申請 *測試帳號*，
+並使用測試環境的登入網址與帳號，送出您在 Unitrade 上的第一筆委託單！</p>
+                        <a href="https://colab.research.google.com/github/PFCEC/unitrade/blob/main/%E6%95%99%E5%AD%B8/sample/unitrade_Demo.ipynb"
+                            class="text-red-600 text-base font-medium hover:underline mt-2 inline-block">查看完整教學 &rarr;</a>
+                    </div>
+                </div>
+                <!-- Step 5 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-red-600 group-[.is-active]:text-white text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 font-bold z-10">
+                        5
+                    </div>
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <h3 class="font-bold text-slate-900 text-2xl">執行自己的程式下單</h3>
+                        </div>
+                        <p class="text-gray-500 text-base">請向您的營業員申請 *正式交易帳號*，
+開始開發並運行屬於您的自動化程式交易策略吧！</p>
+                        <br/>
+                        <a href="{{ '/開始/' | relative_url }}"
+                            class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-base font-medium transition shadow-lg shadow-red-500/30">開始使用Unitrade  &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-white font-bold text-xl">{{ site.title }}</span>
+                    <p class="text-sm mt-2">{{ site.description }}</p>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <!-- 如果您有 footer 連結變數，可以用 Liquid 替換，這裡先寫死 -->
+                    <a href="https://www.pfcf.com.tw/" class="hover:text-white transition">官方網站</a>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-xs text-slate-600">
+                &copy; {{ "now" | date: "%Y" }} President Futures Co.,LTD. 
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyInstall() {
+            const el = document.createElement('textarea');
+            el.value = 'pip install unitrade';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            const msg = document.getElementById('copy-msg');
+            msg.classList.remove('opacity-0');
+            msg.classList.add('opacity-100', '-translate-y-2');
+            setTimeout(() => {
+                msg.classList.remove('opacity-100', '-translate-y-2');
+                msg.classList.add('opacity-0');
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>

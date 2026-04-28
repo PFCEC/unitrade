@@ -1,56 +1,20 @@
 ---
-layout: home
-title: 事先準備
-nav_order: 0
-description: "pfcfpy"
-permalink: /
----
- 
-
-## 1. 事先準備
-
-### 1.1 開立統一期貨帳號
-- 完成開立統一期貨帳號。若尚未開戶，請先進行開戶作業，並參閱統一期貨官網說明。
-
-### 1.2 完成新戶密碼開通
-- 完成新戶密碼的開通，並取得電腦憑證。
-- 若尚未擁有電腦憑證，請至憑證e總管申請。
-
-### 1.3 申請統一API開通測試
-- 向營業員申請統一API開通測試，並取得測試通知的Email。
-
-### 1.4 測試丟單
-- 請操作API完成測試丟單。可以參考測試丟單範例[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](
-https://colab.research.google.com/github/PFCEC/unitrade/blob/main/%E6%95%99%E5%AD%B8/sample/unitrade_Demo.ipynb)進行操作。
-
-
-- <a href="./教學/sample/unitrade_Demo.ipynb" download>下載範例</a> 
-
-
-### 1.5 開通正式API
-- 通知您的營業員開通正式API，並取得正式開通的Email。
-
-### 1.6 儲存憑證
-- 取得您的憑證檔案和密碼。
-- 將憑證檔案放置於程式執行目錄下。您的目錄結構應該類似於以下格式：
-
-```
- ├── 您的程式.py
- └── XXXXXXXXXX.pfx
-```
-
-### 1.7 安裝 `unitrade` 套件
-- 使用以下命令安裝 `unitrade` 套件：
-```bash
-pip install unitrade
-```
-
-- 支援Python版本: 3.7、3.8、3.9、3.10、3.11、3.12
-- 支援 OS: Linux, macOS, Windows
-
-### 1.8 開始使用
-- 完成以上準備後，您可以開始使用API進行交易操作。
-
+layout: landing
+title: 首頁
+nav_exclude: true
 ---
 
- 
+* **`layout: landing`**: 這行最關鍵，告訴 Jekyll 這個頁面不要用預設的 `default` 或 `home` 版型，而是用我們剛剛建立的 `landing.html`。
+* **`nav_exclude: true`**: 因為首頁已經有自己的導覽列了，這可以避免它又出現在某些自動生成的目錄中（視主題設定而定）。
+
+#### 第三步：確認內頁連結
+
+在 `landing.html` 中，我預設將「閱讀完整文件」的按鈕連結指向 `{{ '/docs/home/' | relative_url }}`。
+
+**請確認您的第一頁文件路徑是否正確**。如果您的第一頁文件（例如原本的 `index.md` 內容）被您移動到了 `docs/intro.md`，請將該連結修正為對應的路徑。
+
+### 常見問題：為什麼不用 `_includes`？
+
+因為 `just-the-docs` 的預設 Layout (`default.html`) 已經包含了側邊欄 (`Sidebar`)、搜尋框和內容容器 (`main content`)。如果我們只是把這段 HTML 塞進原本的 `index.md` 內容裡，它會被限制在右邊那個小小的內容框框裡，沒辦法做到「全螢幕 Hero Section」的效果。
+
+使用 **Custom Layout (`layout: landing`)** 可以讓我們完全跳脫主題的限制，獲得 100% 的畫面控制權，同時又不影響其他頁面的運作。這是最乾淨的做法。
