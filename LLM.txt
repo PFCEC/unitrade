@@ -1,0 +1,594 @@
+# Unitrade LLM Context
+
+This file is the LLM-facing entry point for the Unitrade documentation repo.
+Use it to quickly choose the right API component, find the source documentation,
+and generate safe first-use examples for users.
+
+Primary language: Traditional Chinese.
+Primary audience: Developers using the Python `unitrade` package for login,
+quotes, products/contracts, futures orders, account queries, and troubleshooting.
+
+Important safety note: Unitrade examples can include order submission. Treat all
+order code as API mechanics only. Do not provide investment advice. Do not
+hardcode real credentials. For code that can send orders, default to test-style
+placeholders and require explicit user confirmation of environment, account,
+product, side, quantity, price type, and order condition.
+
+## Repository Structure
+
+- `開始.md`: first login/setup flow.
+- `API/`: component and data-object API reference.
+- `教學/`: user-facing tutorials and task-oriented examples.
+- `教學/sample/`: Jupyter notebooks with runnable examples.
+- `說明/`: product codes, error codes, maintenance windows, time format.
+- `常見問題/`: login and order troubleshooting.
+- `.claude-plugin/plugin.json`: Claude Code plugin manifest for direct GitHub installation.
+- `skills/unitrade-quickstart/`: Claude Code plugin skill generated from this documentation.
+- `說明/AI輔助開發.md`: top-level navigation page for using Claude plugin,
+  `LLM.txt`, and `llms-full.txt` for AI-assisted development.
+
+## First-Time User Flow
+
+Start every beginner example with:
+
+```python
+import unitrade
+from unitrade.unitrade import *
+
+api = Unitrade()
+api.on_error = lambda err: print(f"API Error: {err}")
+
+login_response = api.login(
+    "登入url",
+    "帳號",
+    "密碼",
+    "憑證檔名",
+    "憑證密碼",
+)
+
+if login_response.ok:
+    print("登入成功")
+    accounts = api.get_accounts()
+    print("可用帳號:", accounts)
+else:
+    print("登入失敗:", login_response)
+```
+
+After login, check:
+
+- `login_response.ok`
+- `api.login_status_flag`
+- `api.get_accounts()`
+
+Use `api.logout()` before reconnecting or when the script finishes.
+
+## Component Selection
+
+Use this map before writing code:
+
+| User goal | Component | Main docs |
+| --- | --- | --- |
+| Login/logout/accounts | `api` | `API/unitrade.md`, `開始.md` |
+| Domestic products/contracts | `api` | `API/unitrade.md`, `教學/商品查詢.md` |
+| Foreign exchanges/products/contracts | `api` | `API/unitrade.md`, `教學/商品查詢.md` |
+| Domestic futures/options quote | `api.dquote` | `API/dquote.md`, `API/dquote_data.md`, `教學/內期行情.md` |
+| Foreign futures/options quote | `api.fquote` | `API/fquote.md`, `API/fquote_data.md`, `教學/外期行情.md` |
+| Stock and index quote | `api.squote` | `API/squote.md`, `API/squote_data.md`, `教學/現貨行情.md` |
+| Domestic futures/options order | `api.dtrade` | `API/dtrade.md`, `API/dtrade_data.md`, `教學/內期下單.md` |
+| Foreign futures/options order | `api.ftrade` | `API/ftrade.md`, `API/ftrade_data.md`, `教學/外期下單.md` |
+| Domestic futures account | `api.daccount` | `API/daccount.md`, `API/daccount_data.md`, `教學/內期帳務.md` |
+| Foreign futures account | `api.faccount` | `API/faccount.md`, `API/faccount_data.md`, `教學/外期帳務.md` |
+| Connection/server status | component server methods | `教學/連線狀態.md` |
+| Errors and maintenance windows | FAQ/explanation docs | `常見問題/`, `說明/錯誤代碼.md`, `說明/系統維護時程與時間格式說明.md` |
+
+## AI-Assisted Development
+
+Use `說明/AI輔助開發.md` when a user asks how to use Claude Code, Claude
+plugin skills, `LLM.txt`, or `llms-full.txt` to build with Unitrade.
+
+Recommended paths:
+
+- Use Claude Code plugin for local interactive development:
+
+```powershell
+claude --plugin-dir .
+```
+
+Invoke the Unitrade skill:
+
+```text
+/unitrade-onboarding:unitrade-quickstart 我要第一次使用內期行情
+```
+
+- Attach `LLM.txt` to general LLMs for quick context.
+- Attach `llms-full.txt` to long-context LLMs when full API references,
+  tutorials, FAQs, and extracted notebook cells are needed.
+- For order-generating prompts, require confirmation and default to guarded
+  examples that do not send orders until an explicit flag is enabled.
+
+Prefer the variable name `api` in generated examples. Some source pages use
+`unitrade` as the object variable; keep examples consistent unless quoting docs.
+
+## Core API Methods
+
+```python
+api.login(url, userid, password, ca_path, ca_password)
+api.logout()
+api.get_accounts()
+api.get_domestic_products()
+api.get_foreign_products()
+api.get_exchanges()
+api.get_domestic_contracts(symbol, type)
+api.get_foreign_contracts(exchange, symbol, type)
+```
+
+Contract `type` uses `"F"` for futures and `"O"` for options.
+
+## Product/Contract Lookup Examples
+
+```python
+domestic_products = api.get_domestic_products()
+txf_contracts = api.get_domestic_contracts("TXF", "F")
+txo_contracts = api.get_domestic_contracts("TXO", "O")
+
+exchanges = api.get_exchanges()
+foreign_products = api.get_foreign_products()
+nq_contracts = api.get_foreign_contracts("CME", "NQ", "F")
+ado_options = api.get_foreign_contracts("CME", "ADO", "O")
+```
+
+Domestic futures product code notes:
+
+- Futures format: product + contract type + month code + year digit.
+- Month codes January to December: `A B C D E F G H I J K L`.
+- Options use product + contract type + five-digit strike + month/year code.
+- Option Call months use `A-L`; Put months use `M-X`.
+
+Foreign products/contracts change often. Prefer runtime lookup with:
+
+- `api.get_exchanges()`
+- `api.get_foreign_products()`
+- `api.get_foreign_contracts(exchange, symbol, type)`
+
+## Domestic Quote
+
+Snapshot methods:
+
+```python
+api.dquote.query_tick_data_trade(productid)
+api.dquote.query_tick_data_bid_offer(productid)
+api.dquote.query_tick_data_open(productid)
+api.dquote.query_tick_data_high_low(productid)
+api.dquote.query_index_data(productid)
+api.dquote.query_tick_data_settle(productid)
+```
+
+Subscription pattern:
+
+```python
+def on_tick_data_trade(data):
+    print("成交價量:", data)
+
+def on_tick_data_bid_offer(data):
+    print("五檔:", data)
+
+api.dquote.on_tick_data_trade = on_tick_data_trade
+api.dquote.on_tick_data_bid_offer = on_tick_data_bid_offer
+
+sub_ok, msg = api.dquote.subscribe_trade_bid_offer("TXFG5")
+print(sub_ok, msg)
+
+# Done:
+# api.dquote.unsubscribe_trade_bid_offer("TXFG5")
+```
+
+History bars:
+
+```python
+from datetime import datetime
+
+response = api.dquote.get_history_bardata(
+    "1K",
+    datetime(2025, 6, 10),
+    datetime(2025, 7, 7),
+    "1",
+    "MXFG5",
+    2,
+)
+```
+
+## Foreign Quote
+
+Snapshot methods:
+
+```python
+api.fquote.query_tick_data_trade(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_bid(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_offer(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_implied(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_open_close(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_high_low(exchange, symbol, ym, strike, cp)
+api.fquote.query_tick_data_settle(exchange, symbol, ym, strike, cp)
+```
+
+Subscription:
+
+```python
+api.fquote.subscribe(exchange, symbol, ym, cp, strike)
+api.fquote.unsubscribe(exchange, symbol, ym, cp, strike)
+```
+
+The foreign quote docs/tutorials contain an inconsistency around the last two
+parameters for subscription examples: one signature shows `(cp, strike)`, while
+some tutorial comments imply `(strike, CP)`. When debugging, confirm against the
+installed package or local API page and map pipe-delimited product IDs carefully:
+`exchange|symbol|ym|cp|strike`.
+
+History bars:
+
+```python
+from datetime import datetime
+
+response = api.fquote.get_history_bardata(
+    "1K",
+    datetime(2025, 6, 10, 0, 0, 0),
+    datetime(2025, 7, 7, 0, 0, 0),
+    "1",
+    "CMX",
+    "GC",
+    "202508",
+    "F",
+    "",
+    2,
+)
+```
+
+## Stock And Index Quote
+
+Snapshot methods:
+
+```python
+api.squote.query_tick_data("2330")
+api.squote.query_tick_open_close("2330")
+api.squote.query_base_data("2330")
+
+api.squote.query_otc_tick_data("5483")
+api.squote.query_otc_tick_open_close("5483")
+api.squote.query_otc_base_data("5483")
+
+api.squote.query_index_data("IX0001")
+api.squote.query_otc_index_data("IX0043")
+```
+
+Subscription methods:
+
+```python
+api.squote.sub_stock("2330")
+api.squote.unsub_stock("2330")
+api.squote.sub_otc("5483")
+api.squote.unsub_otc("5483")
+api.squote.sub_index("IX0001")
+api.squote.unsub_index("IX0001")
+api.squote.sub_otc_index("IX0043")
+api.squote.unsub_otc_index("IX0043")
+```
+
+Index examples:
+
+- TSE index: `IX0001`
+- OTC index: `IX0043`
+
+See `說明/現貨指數代碼.md` and `說明/櫃買指數代碼.md` for more codes.
+
+## Domestic Trade
+
+Always register callbacks before sending orders:
+
+```python
+def on_reply(orderreply):
+    print("委託回報:", orderreply)
+
+def on_match(matchreply):
+    print("成交回報:", matchreply)
+
+api.dtrade.on_reply = on_reply
+api.dtrade.on_match = on_match
+```
+
+Order:
+
+```python
+order = DOrderObject()
+order.actno = actno
+order.note = "test"
+order.subactno = ""
+order.productid = "TXFF5"
+order.bs = "B"
+order.ordertype = "M"
+order.price = 0
+order.orderqty = 1
+order.ordercondition = "R"
+order.opencloseflag = ""
+order.dtrade = "N"
+
+order_response = api.dtrade.order(order)
+print(order_response.issend, order_response.seq, order_response.errorcode, order_response.errormsg)
+```
+
+Replace/cancel:
+
+```python
+replace = DReplaceObject()
+replace.replacetype = "4"   # 4 cancel, 5 decrease, m modify price
+replace.actno = actno
+replace.orderno = "委託書號"
+
+replace_response = api.dtrade.replace_order(replace)
+```
+
+Query:
+
+```python
+reply_response = api.dtrade.query_reply(actno, 500, "", "", "", "")
+match_response = api.dtrade.query_match(actno, 500, "", "", "", "")
+```
+
+Domestic order flags:
+
+- `bs`: `"B"` buy, `"S"` sell.
+- `ordertype`: `"M"` market, `"L"` limit, `"P"` range market in domestic examples.
+- `ordercondition`: `"I"` IOC, `"R"` ROD, `"F"` FOK.
+- `opencloseflag`: `"0"` open, `"1"` close, blank for auto/unspecified in examples.
+- `dtrade`: `"Y"` day trade, `"N"` non-day-trade.
+
+## Foreign Trade
+
+Always register callbacks before sending orders:
+
+```python
+def on_reply(orderreply):
+    print("外期委託回報:", orderreply.orderno, orderreply.orderstatus)
+
+def on_match(matchreply):
+    print("外期成交回報:", matchreply.orderno, matchreply.matchprice)
+
+api.ftrade.on_reply = on_reply
+api.ftrade.on_match = on_match
+```
+
+Order:
+
+```python
+order = FOrderObject()
+order.actno = actno
+order.subactno = ""
+order.note = "ordertest"
+order.exchange = "CME"
+order.symbol = "AD"
+order.maturitymonthyear = "202409"
+order.putorcall = "F"
+order.strikeprice = ""
+order.bs = "B"
+order.ordertype = "M"
+order.price = 0
+order.stopprice = 0
+order.orderqty = 1
+order.ordercondition = "R"
+order.opencloseflag = "0"
+order.dtrade = "N"
+
+order_response = api.ftrade.order(order)
+print(order_response.issend, order_response.seq, order_response.errorcode, order_response.errormsg)
+```
+
+Foreign order flags:
+
+- `putorcall`: `"F"` futures, `"C"` call, `"P"` put.
+- `ordertype`: `"M"` market, `"L"` limit, `"3"` stop market, `"4"` stop limit.
+- `ordercondition`: `"I"` IOC, `"R"` ROD, `"F"` FOK.
+- `FReplaceObject.replacetype`: `"4"` cancel, `"5"` decrease quantity, `"m"` modify price.
+
+## Account Queries
+
+Domestic:
+
+```python
+api.daccount.get_margin(actno, "NTT")
+api.daccount.get_unliquidation(actno, "NTT")
+api.daccount.get_position(actno)
+api.daccount.get_combine(...)
+api.daccount.get_net(actno)
+```
+
+Foreign:
+
+```python
+api.faccount.get_margin(actno)
+api.faccount.get_unliquidation(actno)
+api.faccount.get_position(actno)
+```
+
+## Connection And Server Methods
+
+Most quote/trade/account components provide:
+
+```python
+component.on_error = callback
+component.on_connected = callback
+component.get_current_server()
+component.get_server_list()
+component.set_sever_by_name(servername)
+component.close()
+```
+
+Naming caveats:
+
+- API docs use `set_sever_by_name(servername)`.
+- Some tutorial text shows `set_server_by_name`.
+- Some API pages spell disconnected callbacks as `on_disonnected` for quote/trade
+  components, while account components use `on_disconnected`.
+
+Defensive helper:
+
+```python
+def set_server(component, server_name):
+    if hasattr(component, "set_sever_by_name"):
+        return component.set_sever_by_name(server_name)
+    return component.set_server_by_name(server_name)
+```
+
+## Troubleshooting
+
+Login failures:
+
+- `No module named 'unitrade'`: install with `pip install unitrade`.
+- `name 'api' is not defined`: run imports and `api = Unitrade()`.
+- URL error: login URL must start with `http://` or `https://`.
+- Connection reset: check network, URL, firewall/VPN, maintenance windows.
+- `查無資料`: login account may be wrong; docs mention branch code + trading account.
+- Password/input error: recheck account/password.
+- Certificate not found: use absolute `.pfx` path or place file beside script.
+- Certificate info incorrect: certificate does not match login account.
+- Already logged in: call `api.logout()` before re-login.
+
+Order failures:
+
+- `不允許操作`: likely not logged in or component not connected.
+- `該帳號不允許操作`: use an account from `api.get_accounts()`.
+- `尚未連線`: check network, component connection, and maintenance windows.
+- Certificate invalid/expired: use correct active `.pfx`.
+
+SDK error codes:
+
+- `MSG000`: buy/sell side error; use `B` or `S`.
+- `MSG001`: order condition error; use `R`, `F`, or `I`.
+- `MSG002`: order type or related flag error.
+- `MSG003`: day-trade flag error; use `Y` or `N`.
+- `MSG004`: format error.
+- `MSG005`: required field missing.
+- `MSG007`: order count limit exceeded.
+- `MSG008`: invalid order number.
+- `MSG009`: numeric value must be greater than 0.
+- `MSG010`: single-order quantity limit exceeded.
+- `MSG011`: Call/Put error; futures use blank or `F`, options use `C` or `P`.
+- `MSG012`: strike price must be numeric.
+- `MSG013`: price type error; use `M`, `L`, `3`, or `4` where supported.
+- `MSG014`: open/close flag error.
+- `MSG015`: day-trade code error; use `Y` or `N`.
+- `MSG016`: not connected.
+
+## Maintenance Windows
+
+Times are Taiwan time, GMT+8.
+
+- Login service: daily 05:30-05:50.
+- Domestic futures trading: weekdays 07:00-07:27; weekend Saturday 07:00 to Monday 07:27.
+- Domestic futures quote: weekdays 07:00-07:20; weekend Saturday 07:00 to Monday 07:20.
+- Domestic futures account: daily 06:00-07:30.
+- Foreign futures trading: weekdays 05:30-05:50; weekend Saturday 05:30 to Monday 05:50.
+- Foreign futures quote: weekdays 05:30-05:55; weekend Saturday 05:30 to Monday 05:55.
+- Foreign futures account: daily 05:30-05:50.
+
+Foreign futures maintenance table is summer time. Add one hour in winter time.
+
+## Time Format
+
+API time strings use `HHmmssfff`:
+
+- `HH`: hour in 24-hour format.
+- `mm`: minute.
+- `ss`: second.
+- `fff`: millisecond.
+
+Example: `153901370` means 15:39:01.370 Taiwan time.
+
+## Claude Plugin Skill
+
+Generated plugin files:
+
+```text
+.claude-plugin/plugin.json
+skills/unitrade-quickstart/
+```
+
+Use from GitHub after this repo is pushed, without creating a plugin marketplace:
+
+```powershell
+git clone https://github.com/PFCEC/unitrade.git
+cd unitrade
+claude --plugin-dir .
+```
+
+For temporary loading from a packaged release zip, replace `<version>` with a real published release:
+
+```powershell
+claude --plugin-url https://github.com/PFCEC/unitrade/releases/download/<version>/unitrade-onboarding-plugin.zip
+```
+
+The zip root must contain `.claude-plugin/plugin.json` and `skills/unitrade-quickstart/`. If unsure, recommend cloning the repo and running `claude --plugin-dir .`.
+
+Run locally during development with:
+
+```powershell
+claude --plugin-dir .
+```
+
+If users need `/plugin install plugin-name@marketplace-name`, create a Claude plugin marketplace. This repo currently avoids marketplace setup.
+
+Invoke:
+
+```text
+/unitrade-onboarding:unitrade-quickstart 我要第一次使用內期行情
+```
+
+The skill's detailed references live in:
+
+- `skills/unitrade-quickstart/references/api-map.md`
+- `skills/unitrade-quickstart/references/tutorial-recipes.md`
+- `skills/unitrade-quickstart/references/troubleshooting.md`
+
+## Source Index
+
+Core:
+
+- `開始.md`
+- `API/unitrade.md`
+
+API components:
+
+- `API/dquote.md`, `API/dquote_data.md`
+- `API/fquote.md`, `API/fquote_data.md`
+- `API/squote.md`, `API/squote_data.md`
+- `API/dtrade.md`, `API/dtrade_data.md`
+- `API/ftrade.md`, `API/ftrade_data.md`
+- `API/daccount.md`, `API/daccount_data.md`
+- `API/faccount.md`, `API/faccount_data.md`
+- `API/domesticproduct.md`, `API/domesticcontract.md`
+- `API/foreignproduct.md`, `API/foreigncontract.md`
+- `API/exchange.md`
+
+Tutorials:
+
+- `教學/連線狀態.md`
+- `教學/商品查詢.md`
+- `教學/內期行情.md`
+- `教學/外期行情.md`
+- `教學/現貨行情.md`
+- `教學/內期下單.md`
+- `教學/外期下單.md`
+- `教學/內期帳務.md`
+- `教學/外期帳務.md`
+
+Explanation and FAQ:
+
+- `說明/錯誤代碼.md`
+- `說明/系統維護時程與時間格式說明.md`
+- `說明/內期商品代碼.md`
+- `說明/內期商品類別.md`
+- `說明/內期複式代碼.md`
+- `說明/外期商品.md`
+- `說明/現貨指數代碼.md`
+- `說明/櫃買指數代碼.md`
+- `說明/AI輔助開發.md`
+- `常見問題/登入失敗.md`
+- `常見問題/下單失敗.md`

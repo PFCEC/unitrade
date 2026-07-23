@@ -1,0 +1,9 @@
+{
+  "name": "unitrade-onboarding",
+  "description": "Unitrade API onboarding skill for first-time users, covering login, components, examples, and troubleshooting.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Unitrade documentation maintainers"
+  },
+  "repository": "https://github.com/PFCEC/unitrade"
+}
