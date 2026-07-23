@@ -107,6 +107,11 @@ footer_content: ""
 # their entries' file path in the `include:` list.
 #
 exclude:
+  - vendor/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
   - .claude-plugin/
   - skills/
   - LLM.txt
