@@ -34,4 +34,3 @@ gem 'jekyll-commonmark'
 gem "just-the-docs"
 gem 'faraday-retry'   
 gem 'webrick'
-gem "just-the-docs"
