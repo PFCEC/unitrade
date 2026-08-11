@@ -67,18 +67,6 @@ class Unitrade()
 
 內期報價元件(必需登入才可以使用)
 
-<a id="unitrade.Unitrade.fquote"></a>
-
-#### fquote
-
-外期報價元件(必需登入才可以使用)
-
-<a id="unitrade.Unitrade.squote"></a>
-
-#### squote
-
-現貨報價元件(必需登入才可以使用)
-
 <a id="unitrade.Unitrade.daccount"></a>
 
 #### daccount

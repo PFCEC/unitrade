@@ -106,49 +106,6 @@ print(f"訂閱結果: {sub_ok} {msg}")
 # api.dquote.unsubscribe_trade_bid_offer("TXFG5")
 ```
 
-## Foreign Quote Snapshot
-
-```python
-exchange = "CME"
-symbol = "NQ"
-ym = "202509"
-strike = ""
-cp = "F"
-
-print(api.fquote.query_tick_data_trade(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_bid(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_offer(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_implied(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_open_close(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_high_low(exchange, symbol, ym, strike, cp))
-print(api.fquote.query_tick_data_settle(exchange, symbol, ym, strike, cp))
-```
-
-## Foreign Quote Subscription
-
-```python
-def on_tick_data_trade(data):
-    print("外期成交:", data)
-
-def on_tick_data_bid(data):
-    print("外期買價:", data)
-
-def on_tick_data_offer(data):
-    print("外期賣價:", data)
-
-api.fquote.on_tick_data_trade = on_tick_data_trade
-api.fquote.on_tick_data_bid = on_tick_data_bid
-api.fquote.on_tick_data_offer = on_tick_data_offer
-
-# The API and tutorial pages disagree on whether the last two args are
-# (cp, strike) or (strike, cp). Confirm against the installed package.
-sub_ok, msg = api.fquote.subscribe("CME", "NQ", "202509", "", "F")
-print(f"訂閱結果: {sub_ok} {msg}")
-
-# 完成後:
-# api.fquote.unsubscribe("CME", "NQ", "202509", "", "F")
-```
-
 ## History Bars
 
 ```python
@@ -163,61 +120,6 @@ response = api.dquote.get_history_bardata(
     2,
 )
 
-foreign_response = api.fquote.get_history_bardata(
-    "1K",
-    datetime(2025, 6, 10, 0, 0, 0),
-    datetime(2025, 7, 7, 0, 0, 0),
-    "1",
-    "CMX",
-    "GC",
-    "202508",
-    "F",
-    "",
-    2,
-)
-```
-
-## Stock Quote Snapshot
-
-```python
-print(api.squote.query_tick_data("2330"))
-print(api.squote.query_tick_open_close("2330"))
-print(api.squote.query_base_data("2330"))
-
-print(api.squote.query_otc_tick_data("5483"))
-print(api.squote.query_otc_tick_open_close("5483"))
-print(api.squote.query_otc_base_data("5483"))
-
-print(api.squote.query_index_data("IX0001"))
-print(api.squote.query_otc_index_data("IX0043"))
-```
-
-## Stock Quote Subscription
-
-```python
-def on_tick_data(data):
-    print("現貨即時行情:", data)
-
-def on_base_data(data):
-    print("現貨基本資料:", data)
-
-def on_tick_data_open_close(data):
-    print("開收盤:", data)
-
-def on_index_data(data):
-    print("指數:", data)
-
-api.squote.on_tick_data = on_tick_data
-api.squote.on_base_data = on_base_data
-api.squote.on_tick_data_open_close = on_tick_data_open_close
-api.squote.on_index_data = on_index_data
-
-print(api.squote.sub_stock("2330"))
-print(api.squote.sub_index("IX0001"))
-
-# 完成後:
-# api.squote.unsub_stock("2330")
-# api.squote.unsub_index("IX0001")
 ```
 
 ## Domestic Order Workflow

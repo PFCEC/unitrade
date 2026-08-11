@@ -34,9 +34,9 @@ print("domestic product sample:", list(domestic_products.keys())[:10])
 foreign_exchanges = api.get_exchanges()
 print("foreign exchange sample:", list(foreign_exchanges.keys())[:10])
 
-stock_id = os.getenv("UNITRADE_STOCK", "2330")
-stock_response = api.squote.query_tick_data(stock_id)
-print(f"stock quote {stock_id}:", stock_response)
+product_id = os.getenv("UNITRADE_DOMESTIC_PRODUCT", "TXFG5")
+quote_response = api.dquote.query_tick_data_trade(product_id)
+print(f"domestic quote {product_id}:", quote_response)
 
 api.logout()
 print("logout flag:", api.login_status_flag)

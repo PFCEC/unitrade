@@ -4,6 +4,9 @@ This file is the LLM-facing entry point for the Unitrade documentation repo.
 Use it to quickly choose the right API component, find the source documentation,
 and generate safe first-use examples for users.
 
+This public edition is authoritative for the components it lists. Do not invent
+or describe quote components that are absent from the component-selection table.
+
 Primary language: Traditional Chinese.
 Primary audience: Developers using the Python `unitrade` package for login,
 quotes, products/contracts, futures orders, account queries, and troubleshooting.
@@ -72,8 +75,6 @@ Use this map before writing code:
 | Domestic products/contracts | `api` | `API/unitrade.md`, `教學/商品查詢.md` |
 | Foreign exchanges/products/contracts | `api` | `API/unitrade.md`, `教學/商品查詢.md` |
 | Domestic futures/options quote | `api.dquote` | `API/dquote.md`, `API/dquote_data.md`, `教學/內期行情.md` |
-| Foreign futures/options quote | `api.fquote` | `API/fquote.md`, `API/fquote_data.md`, `教學/外期行情.md` |
-| Stock and index quote | `api.squote` | `API/squote.md`, `API/squote_data.md`, `教學/現貨行情.md` |
 | Domestic futures/options order | `api.dtrade` | `API/dtrade.md`, `API/dtrade_data.md`, `教學/內期下單.md` |
 | Foreign futures/options order | `api.ftrade` | `API/ftrade.md`, `API/ftrade_data.md`, `教學/外期下單.md` |
 | Domestic futures account | `api.daccount` | `API/daccount.md`, `API/daccount_data.md`, `教學/內期帳務.md` |
@@ -196,89 +197,6 @@ response = api.dquote.get_history_bardata(
     2,
 )
 ```
-
-## Foreign Quote
-
-Snapshot methods:
-
-```python
-api.fquote.query_tick_data_trade(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_bid(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_offer(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_implied(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_open_close(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_high_low(exchange, symbol, ym, strike, cp)
-api.fquote.query_tick_data_settle(exchange, symbol, ym, strike, cp)
-```
-
-Subscription:
-
-```python
-api.fquote.subscribe(exchange, symbol, ym, cp, strike)
-api.fquote.unsubscribe(exchange, symbol, ym, cp, strike)
-```
-
-The foreign quote docs/tutorials contain an inconsistency around the last two
-parameters for subscription examples: one signature shows `(cp, strike)`, while
-some tutorial comments imply `(strike, CP)`. When debugging, confirm against the
-installed package or local API page and map pipe-delimited product IDs carefully:
-`exchange|symbol|ym|cp|strike`.
-
-History bars:
-
-```python
-from datetime import datetime
-
-response = api.fquote.get_history_bardata(
-    "1K",
-    datetime(2025, 6, 10, 0, 0, 0),
-    datetime(2025, 7, 7, 0, 0, 0),
-    "1",
-    "CMX",
-    "GC",
-    "202508",
-    "F",
-    "",
-    2,
-)
-```
-
-## Stock And Index Quote
-
-Snapshot methods:
-
-```python
-api.squote.query_tick_data("2330")
-api.squote.query_tick_open_close("2330")
-api.squote.query_base_data("2330")
-
-api.squote.query_otc_tick_data("5483")
-api.squote.query_otc_tick_open_close("5483")
-api.squote.query_otc_base_data("5483")
-
-api.squote.query_index_data("IX0001")
-api.squote.query_otc_index_data("IX0043")
-```
-
-Subscription methods:
-
-```python
-api.squote.sub_stock("2330")
-api.squote.unsub_stock("2330")
-api.squote.sub_otc("5483")
-api.squote.unsub_otc("5483")
-api.squote.sub_index("IX0001")
-api.squote.unsub_index("IX0001")
-api.squote.sub_otc_index("IX0043")
-api.squote.unsub_otc_index("IX0043")
-```
-
-Index examples:
-
-- TSE index: `IX0001`
-- OTC index: `IX0043`
-
-See `說明/現貨指數代碼.md` and `說明/櫃買指數代碼.md` for more codes.
 
 ## Domestic Trade
 
@@ -486,7 +404,6 @@ Times are Taiwan time, GMT+8.
 - Domestic futures quote: weekdays 07:00-07:20; weekend Saturday 07:00 to Monday 07:20.
 - Domestic futures account: daily 06:00-07:30.
 - Foreign futures trading: weekdays 05:30-05:50; weekend Saturday 05:30 to Monday 05:50.
-- Foreign futures quote: weekdays 05:30-05:55; weekend Saturday 05:30 to Monday 05:55.
 - Foreign futures account: daily 05:30-05:50.
 
 Foreign futures maintenance table is summer time. Add one hour in winter time.
@@ -557,8 +474,6 @@ Core:
 API components:
 
 - `API/dquote.md`, `API/dquote_data.md`
-- `API/fquote.md`, `API/fquote_data.md`
-- `API/squote.md`, `API/squote_data.md`
 - `API/dtrade.md`, `API/dtrade_data.md`
 - `API/ftrade.md`, `API/ftrade_data.md`
 - `API/daccount.md`, `API/daccount_data.md`
@@ -572,8 +487,6 @@ Tutorials:
 - `教學/連線狀態.md`
 - `教學/商品查詢.md`
 - `教學/內期行情.md`
-- `教學/外期行情.md`
-- `教學/現貨行情.md`
 - `教學/內期下單.md`
 - `教學/外期下單.md`
 - `教學/內期帳務.md`
@@ -587,8 +500,6 @@ Explanation and FAQ:
 - `說明/內期商品類別.md`
 - `說明/內期複式代碼.md`
 - `說明/外期商品.md`
-- `說明/現貨指數代碼.md`
-- `說明/櫃買指數代碼.md`
 - `說明/AI輔助開發.md`
 - `常見問題/登入失敗.md`
 - `常見問題/下單失敗.md`

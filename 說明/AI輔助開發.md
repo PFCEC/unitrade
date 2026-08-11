@@ -38,7 +38,7 @@
 |-----------------------|--------------------------------------------|-------------------------------------------|
 | Claude Code plugin    | 在本機專案內互動式開發、產生範例、查元件用途 | `.claude-plugin/plugin.json`<br>`skills/unitrade-quickstart/` |
 | `LLM.txt`             | 給 LLM 快速理解專案、元件地圖與常用範例     | `LLM.txt`                                 |
-| `llms-full.txt`       | 給支援長上下文的 LLM 讀完整文件、API、教學與 notebook 範例 | `llms-full.txt`                           |
+| `llms-full.txt`       | 給支援長上下文的 LLM 讀公開版 API、教學與 notebook 範例 | `llms-full.txt`                           |
 
 ## 使用 Claude Code Plugin
 
@@ -85,7 +85,7 @@ claude --plugin-dir .
 
 ### 3. Plugin 會協助的事情
 
-- 判斷應使用 `api.dquote`、`api.fquote`、`api.squote`、`api.dtrade`、`api.ftrade`、`api.daccount` 或 `api.faccount`
+- 判斷應使用 `api.dquote`、`api.dtrade`、`api.ftrade`、`api.daccount` 或 `api.faccount`
 - 根據教學範例產生可複製的最小程式碼
 - 在下單範例中提醒註冊 `on_reply`、`on_match` callback
 - 對可能送單的程式加入確認步驟或防呆開關（例如 `CONFIRM_SEND_ORDER`）
@@ -100,7 +100,7 @@ claude --plugin-dir .
 | 文件            | 用法建議                                      | 推薦情境                     |
 |-----------------|-----------------------------------------------|------------------------------|
 | `LLM.txt`       | 內容較短，包含元件地圖、常用流程與安全規則     | 快速入門、日常查詢           |
-| `llms-full.txt` | 包含完整 API reference、所有教學與 notebook 範例 | 複雜問題、需要完整 context   |
+| `llms-full.txt` | 包含公開版 API reference、教學與 notebook 範例 | 複雜問題、需要完整 context   |
 
 ### 建議提示詞範例
 
@@ -111,7 +111,7 @@ claude --plugin-dir .
 
 **產生特定元件範例：**
 ```text
-請根據 llms-full.txt 中的 Unitrade 文件，產生一個查詢現貨股票 2330 即時行情與基本資料的 Python 範例。請使用 api 變數，並檢查 response.ok。
+請根據 llms-full.txt 中的 Unitrade 文件，產生一個查詢 TXF 內期行情的 Python 範例。請使用 api 變數，並檢查 response.ok。
 ```
 
 **錯誤排查：**

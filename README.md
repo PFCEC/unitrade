@@ -1,7 +1,7 @@
 # Unitrade API 文件網站
 
 這個專案是以 **Jekyll + just-the-docs** 建立的 Unitrade API 文件站，內容包含：
-- API 說明（國內/國外期貨、現貨行情、帳務、委託等）
+- API 說明（國內/國外期貨帳務與委託、國內期貨行情等）
 - 教學文件與 Notebook 範例
 - 常見問題與錯誤代碼
 

@@ -1,7 +1,6 @@
 ---
 name: unitrade-quickstart
-description: Help first-time Unitrade API users quickly choose the right component and generate correct starter code for login, product/contract lookup, domestic and foreign futures quotes, stock quotes, order workflows, account queries, callbacks, server status, and troubleshooting. Use when the user asks how to start with Unitrade, asks which Unitrade component or method to use, wants examples based on the Unitrade docs/tutorials, or needs help fixing login/order/query errors.
-argument-hint: "[goal, component, or error message]"
+description: Help first-time Unitrade API users quickly choose the right public component and generate correct starter code for login, product/contract lookup, domestic futures quotes, order workflows, account queries, callbacks, server status, and troubleshooting. Use when the user asks how to start with Unitrade, asks which documented Unitrade component or method to use, wants examples based on the public Unitrade docs/tutorials, or needs help fixing login/order/query errors.
 ---
 
 # Unitrade Quickstart
@@ -14,8 +13,6 @@ Help the user get working Unitrade code quickly, especially when they are new to
 2. Choose the component before writing code:
    - `api`: login/logout, accounts, products, contracts, exchanges.
    - `api.dquote`: domestic futures/options quote.
-   - `api.fquote`: foreign futures/options quote.
-   - `api.squote`: stock and index quote.
    - `api.dtrade`: domestic futures/options order and order/match query.
    - `api.ftrade`: foreign futures/options order and order/match query.
    - `api.daccount`: domestic futures account, margin, position, unliquidated positions, combine/net operations.
@@ -24,6 +21,7 @@ Help the user get working Unitrade code quickly, especially when they are new to
 4. Prefer the variable name `api` in examples. The source docs sometimes use `unitrade`; keep generated examples consistent.
 5. Use placeholders or environment variables for URL, account, password, certificate path, and certificate password. Do not hardcode real credentials.
 6. Show the smallest complete example that proves the target component works, then mention the next component-specific method if relevant.
+7. Treat this public skill as authoritative for documented components. Do not invent or describe quote components that are absent from its component map.
 
 ## Load References
 

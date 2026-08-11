@@ -68,7 +68,6 @@ Times are Taiwan time, GMT+8.
 | Domestic futures quote | Weekdays 07:00-07:20; weekend from Saturday 07:00 to Monday 07:20 |
 | Domestic futures account | Daily 06:00-07:30 |
 | Foreign futures trading | Weekdays 05:30-05:50; weekend from Saturday 05:30 to Monday 05:50 |
-| Foreign futures quote | Weekdays 05:30-05:55; weekend from Saturday 05:30 to Monday 05:55 |
 | Foreign futures account | Daily 05:30-05:50 |
 
 Foreign futures maintenance table is summer time. Add one hour in winter time.
@@ -96,7 +95,7 @@ print("accounts:", api.get_accounts())
 Check component server list:
 
 ```python
-for name in ["dquote", "fquote", "squote", "dtrade", "ftrade", "daccount", "faccount"]:
+for name in ["dquote", "dtrade", "ftrade", "daccount", "faccount"]:
     component = getattr(api, name)
     print(name, component.get_current_server())
 ```
