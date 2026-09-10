@@ -67,6 +67,18 @@ class Unitrade()
 
 內期報價元件(必需登入才可以使用)
 
+<a id="unitrade.Unitrade.fquote"></a>
+
+#### fquote
+
+外期報價元件(必需登入才可以使用)
+
+<a id="unitrade.Unitrade.squote"></a>
+
+#### squote
+
+現貨報價元件(必需登入才可以使用)
+
 <a id="unitrade.Unitrade.daccount"></a>
 
 #### daccount
@@ -304,4 +316,53 @@ def get_accounts()
 accounts = unitrade.get_accounts()
 # ['12345678', '87654321', ...]  # 返回帳號清單
 ```
+
+<a id="unitrade.Unitrade.get_domestic_product_info"></a>
+
+#### get\_domestic\_product\_info
+
+```python
+def get_domestic_product_info(product) -> DomesticProductInfoResponse
+```
+
+查詢內期商品資訊。
+
+**Arguments**:
+
+- `product` _str_ - 商品代碼，例如 TXF。
+  
+
+**Returns**:
+
+- `DomesticProductInfoResponse` - 查詢結果。
+  
+  ##### 回傳值 DomesticProductInfoResponse
+  
+  | 型別 | 說明 |
+  | ------ | ------------- |
+  | bool | ok：是否查詢成功 |
+  | str | error：錯誤訊息，成功時為空字串 |
+  | List[DomesticProductInfo] | data：內期商品資訊清單，查詢失敗時為 None |
+  
+  ##### DomesticProductInfo 欄位
+  
+  | 型別 | 說明 |
+  | ------ | ------------- |
+  | str | product_type：商品類別，1 為單式期貨，2 為單式選擇權 |
+  | str | product_code：商品代號，例如 TXF |
+  | str | contract_type：契約種類；I 指數類、R 利率類、B 債券類、C 商品類、S 股票類、E 匯率類 |
+  | str | contract_size：合約大小 |
+  | str | order_decimal_places：委託價格小數位數 |
+  | str | name：商品名稱 |
+  | str | stock_code：股票代號，例如 2330 |
+  | str | initial_margin：交易保證金，僅期貨商品適用 |
+  | str | currency：交易幣別 |
+  | str | maintenance_margin：維持保證金，僅期貨商品適用 |
+  | Optional[float] | tickvalue：最小跳動點數；查無 TickData 設定時為 None |
+  
+
+**Example**:
+
+  response = unitrade.get_domestic_product_info("TXF")
+  `DomesticProductInfoResponse`(ok=True, error='', data=[DomesticProductInfo(product_type='1', product_code='TXF', contract_type='I', contract_size='200', order_decimal_places='2', name='臺指', stock_code='', initial_margin='636000', currency='NTT', maintenance_margin='488000', tickvalue=1.0)])
 
